@@ -10,8 +10,11 @@
 
 #include "compton.h"
 #include <ctype.h>
+#include <time.h>
 
 // === Global constants ===
+
+static void animate_window(win * w, session_t * ps);
 
 /// Name strings for window types.
 const char * const WINTYPES[NUM_WINTYPES] = {
@@ -52,1006 +55,1006 @@ const char * const BACKEND_STRS[NUM_BKEND + 1] = {
 };
 
 /// Function pointers to init VSync modes.
-static bool (* const (VSYNC_FUNCS_INIT[NUM_VSYNC]))(session_t *ps) = {
-  [VSYNC_DRM          ] = vsync_drm_init,
-  [VSYNC_OPENGL       ] = vsync_opengl_init,
-  [VSYNC_OPENGL_OML   ] = vsync_opengl_oml_init,
-  [VSYNC_OPENGL_SWC   ] = vsync_opengl_swc_init,
-  [VSYNC_OPENGL_MSWC  ] = vsync_opengl_mswc_init,
-};
-
-/// Function pointers to wait for VSync.
-static int (* const (VSYNC_FUNCS_WAIT[NUM_VSYNC]))(session_t *ps) = {
-#ifdef CONFIG_VSYNC_DRM
-  [VSYNC_DRM        ] = vsync_drm_wait,
-#endif
-#ifdef CONFIG_VSYNC_OPENGL
-  [VSYNC_OPENGL     ] = vsync_opengl_wait,
-  [VSYNC_OPENGL_OML ] = vsync_opengl_oml_wait,
-#endif
-};
-
-/// Function pointers to deinitialize VSync.
-static void (* const (VSYNC_FUNCS_DEINIT[NUM_VSYNC]))(session_t *ps) = {
-#ifdef CONFIG_VSYNC_OPENGL
-  [VSYNC_OPENGL_SWC   ] = vsync_opengl_swc_deinit,
-  [VSYNC_OPENGL_MSWC  ] = vsync_opengl_mswc_deinit,
-#endif
-};
-
-/// Names of root window properties that could point to a pixmap of
-/// background.
-const static char *background_props_str[] = {
-  "_XROOTPMAP_ID",
-  "_XSETROOT_ID",
-  0,
-};
-
-// === Global variables ===
-
-/// Pointer to current session, as a global variable. Only used by
-/// <code>error()</code> and <code>reset_enable()</code>, which could not
-/// have a pointer to current session passed in.
-session_t *ps_g = NULL;
-
-// === Fading ===
-
-/**
- * Get the time left before next fading point.
- *
- * In milliseconds.
- */
-static int
-fade_timeout(session_t *ps) {
-  int diff = ps->o.fade_delta - get_time_ms() + ps->fade_time;
-
-  diff = normalize_i_range(diff, 0, ps->o.fade_delta * 2);
-
-  return diff;
-}
-
-/**
- * Run fading on a window.
- *
- * @param steps steps of fading
- */
-static void
-run_fade(session_t *ps, win *w, unsigned steps) {
-  // If we have reached target opacity, return
-  if (w->opacity == w->opacity_tgt) {
-    return;
-  }
-
-  if (!w->fade)
-    w->opacity = w->opacity_tgt;
-  else if (steps) {
-    // Use double below because opacity_t will probably overflow during
-    // calculations
-    if (w->opacity < w->opacity_tgt)
-      w->opacity = normalize_d_range(
-          (double) w->opacity + (double) ps->o.fade_in_step * steps,
-          0.0, w->opacity_tgt);
-    else
-      w->opacity = normalize_d_range(
-          (double) w->opacity - (double) ps->o.fade_out_step * steps,
-          w->opacity_tgt, OPAQUE);
-  }
-
-  if (w->opacity != w->opacity_tgt) {
-    ps->idling = false;
-  }
-}
-
-/**
- * Set fade callback of a window, and possibly execute the previous
- * callback.
- *
- * @param exec_callback whether the previous callback is to be executed
- */
-static void
-set_fade_callback(session_t *ps, win *w,
-    void (*callback) (session_t *ps, win *w), bool exec_callback) {
-  void (*old_callback) (session_t *ps, win *w) = w->fade_callback;
-
-  w->fade_callback = callback;
-  // Must be the last line as the callback could destroy w!
-  if (exec_callback && old_callback) {
-    old_callback(ps, w);
-    // Although currently no callback function affects window state on
-    // next paint, it could, in the future
-    ps->idling = false;
-  }
-}
-
-// === Shadows ===
-
-static double __attribute__((const))
-gaussian(double r, double x, double y) {
-  return ((1 / (sqrt(2 * M_PI * r))) *
-    exp((- (x * x + y * y)) / (2 * r * r)));
-}
-
-static conv *
-make_gaussian_map(double r) {
-  conv *c;
-  int size = ((int) ceil((r * 3)) + 1) & ~1;
-  int center = size / 2;
-  int x, y;
-  double t;
-  double g;
-
-  c = malloc(sizeof(conv) + size * size * sizeof(double));
-  c->size = size;
-  c->data = (double *) (c + 1);
-  t = 0.0;
-
-  for (y = 0; y < size; y++) {
-    for (x = 0; x < size; x++) {
-      g = gaussian(r, x - center, y - center);
-      t += g;
-      c->data[y * size + x] = g;
-    }
-  }
-
-  for (y = 0; y < size; y++) {
-    for (x = 0; x < size; x++) {
-      c->data[y * size + x] /= t;
-    }
-  }
-
-  return c;
-}
-
-/*
- * A picture will help
- *
- *      -center   0                width  width+center
- *  -center +-----+-------------------+-----+
- *          |     |                   |     |
- *          |     |                   |     |
- *        0 +-----+-------------------+-----+
- *          |     |                   |     |
- *          |     |                   |     |
- *          |     |                   |     |
- *   height +-----+-------------------+-----+
- *          |     |                   |     |
- * height+  |     |                   |     |
- *  center  +-----+-------------------+-----+
- */
-
-static unsigned char
-sum_gaussian(conv *map, double opacity,
-             int x, int y, int width, int height) {
-  int fx, fy;
-  double *g_data;
-  double *g_line = map->data;
-  int g_size = map->size;
-  int center = g_size / 2;
-  int fx_start, fx_end;
-  int fy_start, fy_end;
-  double v;
-
-  /*
-   * Compute set of filter values which are "in range",
-   * that's the set with:
-   *    0 <= x + (fx-center) && x + (fx-center) < width &&
-   *  0 <= y + (fy-center) && y + (fy-center) < height
-   *
-   *  0 <= x + (fx - center)    x + fx - center < width
-   *  center - x <= fx    fx < width + center - x
-   */
-
-  fx_start = center - x;
-  if (fx_start < 0) fx_start = 0;
-  fx_end = width + center - x;
-  if (fx_end > g_size) fx_end = g_size;
-
-  fy_start = center - y;
-  if (fy_start < 0) fy_start = 0;
-  fy_end = height + center - y;
-  if (fy_end > g_size) fy_end = g_size;
-
-  g_line = g_line + fy_start * g_size + fx_start;
-
-  v = 0;
-
-  for (fy = fy_start; fy < fy_end; fy++) {
-    g_data = g_line;
-    g_line += g_size;
-
-    for (fx = fx_start; fx < fx_end; fx++) {
-      v += *g_data++;
-    }
-  }
-
-  if (v > 1) v = 1;
-
-  return ((unsigned char) (v * opacity * 255.0));
-}
-
-/* precompute shadow corners and sides
-   to save time for large windows */
-
-static void
-presum_gaussian(session_t *ps, conv *map) {
-  int center = map->size / 2;
-  int opacity, x, y;
-
-  ps->cgsize = map->size;
-
-  if (ps->shadow_corner)
-    free(ps->shadow_corner);
-  if (ps->shadow_top)
-    free(ps->shadow_top);
-
-  ps->shadow_corner = malloc((ps->cgsize + 1) * (ps->cgsize + 1) * 26);
-  ps->shadow_top = malloc((ps->cgsize + 1) * 26);
-
-  for (x = 0; x <= ps->cgsize; x++) {
-    ps->shadow_top[25 * (ps->cgsize + 1) + x] =
-      sum_gaussian(map, 1, x - center, center, ps->cgsize * 2, ps->cgsize * 2);
-
-    for (opacity = 0; opacity < 25; opacity++) {
-      ps->shadow_top[opacity * (ps->cgsize + 1) + x] =
-        ps->shadow_top[25 * (ps->cgsize + 1) + x] * opacity / 25;
-    }
-
-    for (y = 0; y <= x; y++) {
-      ps->shadow_corner[25 * (ps->cgsize + 1) * (ps->cgsize + 1) + y * (ps->cgsize + 1) + x]
-        = sum_gaussian(map, 1, x - center, y - center, ps->cgsize * 2, ps->cgsize * 2);
-      ps->shadow_corner[25 * (ps->cgsize + 1) * (ps->cgsize + 1) + x * (ps->cgsize + 1) + y]
-        = ps->shadow_corner[25 * (ps->cgsize + 1) * (ps->cgsize + 1) + y * (ps->cgsize + 1) + x];
-
-      for (opacity = 0; opacity < 25; opacity++) {
-        ps->shadow_corner[opacity * (ps->cgsize + 1) * (ps->cgsize + 1)
-                      + y * (ps->cgsize + 1) + x]
-          = ps->shadow_corner[opacity * (ps->cgsize + 1) * (ps->cgsize + 1)
-                          + x * (ps->cgsize + 1) + y]
-          = ps->shadow_corner[25 * (ps->cgsize + 1) * (ps->cgsize + 1)
-                          + y * (ps->cgsize + 1) + x] * opacity / 25;
-      }
-    }
-  }
-}
-
-static XImage *
-make_shadow(session_t *ps, double opacity,
-            int width, int height) {
-  XImage *ximage;
-  unsigned char *data;
-  int ylimit, xlimit;
-  int swidth = width + ps->cgsize;
-  int sheight = height + ps->cgsize;
-  int center = ps->cgsize / 2;
-  int x, y;
-  unsigned char d;
-  int x_diff;
-  int opacity_int = (int)(opacity * 25);
-
-  data = malloc(swidth * sheight * sizeof(unsigned char));
-  if (!data) return 0;
-
-  ximage = XCreateImage(ps->dpy, ps->vis, 8,
-    ZPixmap, 0, (char *) data, swidth, sheight, 8, swidth * sizeof(char));
-
-  if (!ximage) {
-    free(data);
-    return 0;
-  }
-
-  /*
-   * Build the gaussian in sections
-   */
-
-  /*
-   * center (fill the complete data array)
-   */
-
-  // If clear_shadow is enabled and the border & corner shadow (which
-  // later will be filled) could entirely cover the area of the shadow
-  // that will be displayed, do not bother filling other pixels. If it
-  // can't, we must fill the other pixels here.
-  /* if (!(clear_shadow && ps->o.shadow_offset_x <= 0 && ps->o.shadow_offset_x >= -ps->cgsize
-        && ps->o.shadow_offset_y <= 0 && ps->o.shadow_offset_y >= -ps->cgsize)) { */
-    if (ps->cgsize > 0) {
-      d = ps->shadow_top[opacity_int * (ps->cgsize + 1) + ps->cgsize];
-    } else {
-      d = sum_gaussian(ps->gaussian_map,
-        opacity, center, center, width, height);
-    }
-    memset(data, d, sheight * swidth);
-  // }
-
-  /*
-   * corners
-   */
-
-  ylimit = ps->cgsize;
-  if (ylimit > sheight / 2) ylimit = (sheight + 1) / 2;
-
-  xlimit = ps->cgsize;
-  if (xlimit > swidth / 2) xlimit = (swidth + 1) / 2;
-
-  for (y = 0; y < ylimit; y++) {
-    for (x = 0; x < xlimit; x++) {
-      if (xlimit == ps->cgsize && ylimit == ps->cgsize) {
-        d = ps->shadow_corner[opacity_int * (ps->cgsize + 1) * (ps->cgsize + 1)
-                          + y * (ps->cgsize + 1) + x];
-      } else {
-        d = sum_gaussian(ps->gaussian_map,
-          opacity, x - center, y - center, width, height);
-      }
-      data[y * swidth + x] = d;
-      data[(sheight - y - 1) * swidth + x] = d;
-      data[(sheight - y - 1) * swidth + (swidth - x - 1)] = d;
-      data[y * swidth + (swidth - x - 1)] = d;
-    }
-  }
-
-  /*
-   * top/bottom
-   */
-
-  x_diff = swidth - (ps->cgsize * 2);
-  if (x_diff > 0 && ylimit > 0) {
-    for (y = 0; y < ylimit; y++) {
-      if (ylimit == ps->cgsize) {
-        d = ps->shadow_top[opacity_int * (ps->cgsize + 1) + y];
-      } else {
-        d = sum_gaussian(ps->gaussian_map,
-          opacity, center, y - center, width, height);
-      }
-      memset(&data[y * swidth + ps->cgsize], d, x_diff);
-      memset(&data[(sheight - y - 1) * swidth + ps->cgsize], d, x_diff);
-    }
-  }
-
-  /*
-   * sides
-   */
-
-  for (x = 0; x < xlimit; x++) {
-    if (xlimit == ps->cgsize) {
-      d = ps->shadow_top[opacity_int * (ps->cgsize + 1) + x];
-    } else {
-      d = sum_gaussian(ps->gaussian_map,
-        opacity, x - center, center, width, height);
-    }
-    for (y = ps->cgsize; y < sheight - ps->cgsize; y++) {
-      data[y * swidth + x] = d;
-      data[y * swidth + (swidth - x - 1)] = d;
-    }
-  }
-
-  /*
-  if (clear_shadow) {
-    // Clear the region in the shadow that the window would cover based
-    // on shadow_offset_{x,y} user provides
-    int xstart = normalize_i_range(- (int) ps->o.shadow_offset_x, 0, swidth);
-    int xrange = normalize_i_range(width - (int) ps->o.shadow_offset_x,
-        0, swidth) - xstart;
-    int ystart = normalize_i_range(- (int) ps->o.shadow_offset_y, 0, sheight);
-    int yend = normalize_i_range(height - (int) ps->o.shadow_offset_y,
-        0, sheight);
-    int y;
-
-    for (y = ystart; y < yend; y++) {
-      memset(&data[y * swidth + xstart], 0, xrange);
-    }
-  }
-  */
-
-  return ximage;
-}
-
-/**
- * Generate shadow <code>Picture</code> for a window.
- */
-static bool
-win_build_shadow(session_t *ps, win *w, double opacity) {
-  const int width = w->widthb;
-  const int height = w->heightb;
-
-  XImage *shadow_image = NULL;
-  Pixmap shadow_pixmap = None, shadow_pixmap_argb = None;
-  Picture shadow_picture = None, shadow_picture_argb = None;
-  GC gc = None;
-
-  shadow_image = make_shadow(ps, opacity, width, height);
-  if (!shadow_image)
-    return None;
-
-  shadow_pixmap = XCreatePixmap(ps->dpy, ps->root,
-    shadow_image->width, shadow_image->height, 8);
-  shadow_pixmap_argb = XCreatePixmap(ps->dpy, ps->root,
-    shadow_image->width, shadow_image->height, 32);
-
-  if (!shadow_pixmap || !shadow_pixmap_argb)
-    goto shadow_picture_err;
-
-  shadow_picture = XRenderCreatePicture(ps->dpy, shadow_pixmap,
-    XRenderFindStandardFormat(ps->dpy, PictStandardA8), 0, 0);
-  shadow_picture_argb = XRenderCreatePicture(ps->dpy, shadow_pixmap_argb,
-    XRenderFindStandardFormat(ps->dpy, PictStandardARGB32), 0, 0);
-  if (!shadow_picture || !shadow_picture_argb)
-    goto shadow_picture_err;
-
-  gc = XCreateGC(ps->dpy, shadow_pixmap, 0, 0);
-  if (!gc)
-    goto shadow_picture_err;
-
-  XPutImage(ps->dpy, shadow_pixmap, gc, shadow_image, 0, 0, 0, 0,
-    shadow_image->width, shadow_image->height);
-  XRenderComposite(ps->dpy, PictOpSrc, ps->cshadow_picture, shadow_picture,
-      shadow_picture_argb, 0, 0, 0, 0, 0, 0,
-      shadow_image->width, shadow_image->height);
-
-  assert(!w->shadow_paint.pixmap);
-  w->shadow_paint.pixmap = shadow_pixmap_argb;
-  assert(!w->shadow_paint.pict);
-  w->shadow_paint.pict = shadow_picture_argb;
-
-  // Sync it once and only once
-  xr_sync(ps, w->shadow_paint.pixmap, NULL);
-
-  XFreeGC(ps->dpy, gc);
-  XDestroyImage(shadow_image);
-  XFreePixmap(ps->dpy, shadow_pixmap);
-  XRenderFreePicture(ps->dpy, shadow_picture);
-
-  return true;
-
-shadow_picture_err:
-  if (shadow_image)
-    XDestroyImage(shadow_image);
-  if (shadow_pixmap)
-    XFreePixmap(ps->dpy, shadow_pixmap);
-  if (shadow_pixmap_argb)
-    XFreePixmap(ps->dpy, shadow_pixmap_argb);
-  if (shadow_picture)
-    XRenderFreePicture(ps->dpy, shadow_picture);
-  if (shadow_picture_argb)
-    XRenderFreePicture(ps->dpy, shadow_picture_argb);
-  if (gc)
-    XFreeGC(ps->dpy, gc);
-
-  return false;
-}
-
-/**
- * Generate a 1x1 <code>Picture</code> of a particular color.
- */
-static Picture
-solid_picture(session_t *ps, bool argb, double a,
-              double r, double g, double b) {
-  Pixmap pixmap;
-  Picture picture;
-  XRenderPictureAttributes pa;
-  XRenderColor c;
-
-  pixmap = XCreatePixmap(ps->dpy, ps->root, 1, 1, argb ? 32 : 8);
-
-  if (!pixmap) return None;
-
-  pa.repeat = True;
-  picture = XRenderCreatePicture(ps->dpy, pixmap,
-    XRenderFindStandardFormat(ps->dpy, argb
-      ? PictStandardARGB32 : PictStandardA8),
-    CPRepeat,
-    &pa);
-
-  if (!picture) {
-    XFreePixmap(ps->dpy, pixmap);
-    return None;
-  }
-
-  c.alpha = a * 0xffff;
-  c.red =   r * 0xffff;
-  c.green = g * 0xffff;
-  c.blue =  b * 0xffff;
-
-  XRenderFillRectangle(ps->dpy, PictOpSrc, picture, &c, 0, 0, 1, 1);
-  XFreePixmap(ps->dpy, pixmap);
-
-  return picture;
-}
-
-// === Error handling ===
-
-static void
-discard_ignore(session_t *ps, unsigned long sequence) {
-  while (ps->ignore_head) {
-    if ((long) (sequence - ps->ignore_head->sequence) > 0) {
-      ignore_t *next = ps->ignore_head->next;
-      free(ps->ignore_head);
-      ps->ignore_head = next;
-      if (!ps->ignore_head) {
-        ps->ignore_tail = &ps->ignore_head;
-      }
-    } else {
-      break;
-    }
-  }
-}
-
-static void
-set_ignore(session_t *ps, unsigned long sequence) {
-  if (ps->o.show_all_xerrors)
-    return;
-
-  ignore_t *i = malloc(sizeof(ignore_t));
-  if (!i) return;
-
-  i->sequence = sequence;
-  i->next = 0;
-  *ps->ignore_tail = i;
-  ps->ignore_tail = &i->next;
-}
-
-static int
-should_ignore(session_t *ps, unsigned long sequence) {
-  discard_ignore(ps, sequence);
-  return ps->ignore_head && ps->ignore_head->sequence == sequence;
-}
-
-// === Windows ===
-
-/**
- * Get a specific attribute of a window.
- *
- * Returns a blank structure if the returned type and format does not
- * match the requested type and format.
- *
- * @param ps current session
- * @param w window
- * @param atom atom of attribute to fetch
- * @param length length to read
- * @param rtype atom of the requested type
- * @param rformat requested format
- * @return a <code>winprop_t</code> structure containing the attribute
- *    and number of items. A blank one on failure.
- */
-winprop_t
-wid_get_prop_adv(const session_t *ps, Window w, Atom atom, long offset,
-    long length, Atom rtype, int rformat) {
-  Atom type = None;
-  int format = 0;
-  unsigned long nitems = 0, after = 0;
-  unsigned char *data = NULL;
-
-  if (Success == XGetWindowProperty(ps->dpy, w, atom, offset, length,
-        False, rtype, &type, &format, &nitems, &after, &data)
-      && nitems && (AnyPropertyType == type || type == rtype)
-      && (!rformat || format == rformat)
-      && (8 == format || 16 == format || 32 == format)) {
-      return (winprop_t) {
-        .data.p8 = data,
-        .nitems = nitems,
-        .type = type,
-        .format = format,
-      };
-  }
-
-  cxfree(data);
-
-  return (winprop_t) {
-    .data.p8 = NULL,
-    .nitems = 0,
-    .type = AnyPropertyType,
-    .format = 0
+  static bool (* const (VSYNC_FUNCS_INIT[NUM_VSYNC]))(session_t *ps) = {
+    [VSYNC_DRM          ] = vsync_drm_init,
+    [VSYNC_OPENGL       ] = vsync_opengl_init,
+    [VSYNC_OPENGL_OML   ] = vsync_opengl_oml_init,
+    [VSYNC_OPENGL_SWC   ] = vsync_opengl_swc_init,
+    [VSYNC_OPENGL_MSWC  ] = vsync_opengl_mswc_init,
   };
-}
 
-/**
- * Check if a window has rounded corners.
- */
-static void
-win_rounded_corners(session_t *ps, win *w) {
-  w->rounded_corners = false;
+  /// Function pointers to wait for VSync.
+  static int (* const (VSYNC_FUNCS_WAIT[NUM_VSYNC]))(session_t *ps) = {
+  #ifdef CONFIG_VSYNC_DRM
+    [VSYNC_DRM        ] = vsync_drm_wait,
+  #endif
+  #ifdef CONFIG_VSYNC_OPENGL
+    [VSYNC_OPENGL     ] = vsync_opengl_wait,
+    [VSYNC_OPENGL_OML ] = vsync_opengl_oml_wait,
+  #endif
+  };
 
-  if (!w->bounding_shaped)
-    return;
+  /// Function pointers to deinitialize VSync.
+  static void (* const (VSYNC_FUNCS_DEINIT[NUM_VSYNC]))(session_t *ps) = {
+  #ifdef CONFIG_VSYNC_OPENGL
+    [VSYNC_OPENGL_SWC   ] = vsync_opengl_swc_deinit,
+    [VSYNC_OPENGL_MSWC  ] = vsync_opengl_mswc_deinit,
+  #endif
+  };
 
-  // Fetch its bounding region
-  if (!w->border_size)
-    w->border_size = border_size(ps, w, true);
+  /// Names of root window properties that could point to a pixmap of
+  /// background.
+  const static char *background_props_str[] = {
+    "_XROOTPMAP_ID",
+    "_XSETROOT_ID",
+    0,
+  };
 
-  // Quit if border_size() returns None
-  if (!w->border_size)
-    return;
+  // === Global variables ===
 
-  // Determine the minimum width/height of a rectangle that could mark
-  // a window as having rounded corners
-  unsigned short minwidth = max_i(w->widthb * (1 - ROUNDED_PERCENT),
-      w->widthb - ROUNDED_PIXELS);
-  unsigned short minheight = max_i(w->heightb * (1 - ROUNDED_PERCENT),
-      w->heightb - ROUNDED_PIXELS);
+  /// Pointer to current session, as a global variable. Only used by
+  /// <code>error()</code> and <code>reset_enable()</code>, which could not
+  /// have a pointer to current session passed in.
+  session_t *ps_g = NULL;
 
-  // Get the rectangles in the bounding region
-  int nrects = 0, i;
-  XRectangle *rects = XFixesFetchRegion(ps->dpy, w->border_size, &nrects);
-  if (!rects)
-    return;
+  // === Fading ===
 
-  // Look for a rectangle large enough for this window be considered
-  // having rounded corners
-  for (i = 0; i < nrects; ++i)
-    if (rects[i].width >= minwidth && rects[i].height >= minheight) {
-      w->rounded_corners = true;
-      break;
+  /**
+   * Get the time left before next fading point.
+   *
+   * In milliseconds.
+   */
+  static int
+  fade_timeout(session_t *ps) {
+    int diff = ps->o.fade_delta - get_time_ms() + ps->fade_time;
+
+    diff = normalize_i_range(diff, 0, ps->o.fade_delta * 2);
+
+    return diff;
+  }
+
+  /**
+   * Run fading on a window.
+   *
+   * @param steps steps of fading
+   */
+  static void
+  run_fade(session_t *ps, win *w, unsigned steps) {
+    // If we have reached target opacity, return
+    if (w->opacity == w->opacity_tgt) {
+      return;
     }
 
-  cxfree(rects);
-}
-
-/**
- * Add a pattern to a condition linked list.
- */
-static bool
-condlst_add(session_t *ps, c2_lptr_t **pcondlst, const char *pattern) {
-  if (!pattern)
-    return false;
-
-#ifdef CONFIG_C2
-  if (!c2_parse(ps, pcondlst, pattern))
-    exit(1);
-#else
-  printf_errfq(1, "(): Condition support not compiled in.");
-#endif
-
-  return true;
-}
-
-/**
- * Determine the event mask for a window.
- */
-static long
-determine_evmask(session_t *ps, Window wid, win_evmode_t mode) {
-  long evmask = NoEventMask;
-  win *w = NULL;
-
-  // Check if it's a mapped frame window
-  if (WIN_EVMODE_FRAME == mode
-      || ((w = find_win(ps, wid)) && IsViewable == w->a.map_state)) {
-    evmask |= PropertyChangeMask;
-    if (ps->o.track_focus && !ps->o.use_ewmh_active_win)
-      evmask |= FocusChangeMask;
-  }
-
-  // Check if it's a mapped client window
-  if (WIN_EVMODE_CLIENT == mode
-      || ((w = find_toplevel(ps, wid)) && IsViewable == w->a.map_state)) {
-    if (ps->o.frame_opacity || ps->o.track_wdata || ps->track_atom_lst
-        || ps->o.detect_client_opacity)
-      evmask |= PropertyChangeMask;
-  }
-
-  return evmask;
-}
-
-/**
- * Find out the WM frame of a client window by querying X.
- *
- * @param ps current session
- * @param wid window ID
- * @return struct _win object of the found window, NULL if not found
- */
-static win *
-find_toplevel2(session_t *ps, Window wid) {
-  win *w = NULL;
-
-  // We traverse through its ancestors to find out the frame
-  while (wid && wid != ps->root && !(w = find_win(ps, wid))) {
-    Window troot;
-    Window parent;
-    Window *tchildren;
-    unsigned tnchildren;
-
-    // XQueryTree probably fails if you run compton when X is somehow
-    // initializing (like add it in .xinitrc). In this case
-    // just leave it alone.
-    if (!XQueryTree(ps->dpy, wid, &troot, &parent, &tchildren,
-          &tnchildren)) {
-      parent = 0;
-      break;
+    if (!w->fade)
+      w->opacity = w->opacity_tgt;
+    else if (steps) {
+      // Use double below because opacity_t will probably overflow during
+      // calculations
+      if (w->opacity < w->opacity_tgt)
+        w->opacity = normalize_d_range(
+            (double) w->opacity + (double) ps->o.fade_in_step * steps,
+            0.0, w->opacity_tgt);
+      else
+        w->opacity = normalize_d_range(
+            (double) w->opacity - (double) ps->o.fade_out_step * steps,
+            w->opacity_tgt, OPAQUE);
     }
 
-    cxfree(tchildren);
-
-    wid = parent;
+    if (w->opacity != w->opacity_tgt) {
+      ps->idling = false;
+    }
   }
 
-  return w;
-}
+  /**
+   * Set fade callback of a window, and possibly execute the previous
+   * callback.
+   *
+   * @param exec_callback whether the previous callback is to be executed
+   */
+  static void
+  set_fade_callback(session_t *ps, win *w,
+      void (*callback) (session_t *ps, win *w), bool exec_callback) {
+    void (*old_callback) (session_t *ps, win *w) = w->fade_callback;
 
-/**
- * Recheck currently focused window and set its <code>w->focused</code>
- * to true.
- *
- * @param ps current session
- * @return struct _win of currently focused window, NULL if not found
- */
-static win *
-recheck_focus(session_t *ps) {
-  // Use EWMH _NET_ACTIVE_WINDOW if enabled
-  if (ps->o.use_ewmh_active_win) {
-    update_ewmh_active_win(ps);
-    return ps->active_win;
+    w->fade_callback = callback;
+    // Must be the last line as the callback could destroy w!
+    if (exec_callback && old_callback) {
+      old_callback(ps, w);
+      // Although currently no callback function affects window state on
+      // next paint, it could, in the future
+      ps->idling = false;
+    }
   }
 
-  // Determine the currently focused window so we can apply appropriate
-  // opacity on it
-  Window wid = 0;
-  int revert_to;
+  // === Shadows ===
 
-  XGetInputFocus(ps->dpy, &wid, &revert_to);
-
-  win *w = find_win_all(ps, wid);
-
-#ifdef DEBUG_EVENTS
-  print_timestamp(ps);
-  printf_dbgf("(): %#010lx (%#010lx \"%s\") focused.\n", wid,
-      (w ? w->id: None), (w ? w->name: NULL));
-#endif
-
-  // And we set the focus state here
-  if (w) {
-    win_set_focused(ps, w, true);
-    return w;
+  static double __attribute__((const))
+  gaussian(double r, double x, double y) {
+    return ((1 / (sqrt(2 * M_PI * r))) *
+      exp((- (x * x + y * y)) / (2 * r * r)));
   }
 
-  return NULL;
-}
+  static conv *
+  make_gaussian_map(double r) {
+    conv *c;
+    int size = ((int) ceil((r * 3)) + 1) & ~1;
+    int center = size / 2;
+    int x, y;
+    double t;
+    double g;
 
-static bool
-get_root_tile(session_t *ps) {
+    c = malloc(sizeof(conv) + size * size * sizeof(double));
+    c->size = size;
+    c->data = (double *) (c + 1);
+    t = 0.0;
+
+    for (y = 0; y < size; y++) {
+      for (x = 0; x < size; x++) {
+        g = gaussian(r, x - center, y - center);
+        t += g;
+        c->data[y * size + x] = g;
+      }
+    }
+
+    for (y = 0; y < size; y++) {
+      for (x = 0; x < size; x++) {
+        c->data[y * size + x] /= t;
+      }
+    }
+
+    return c;
+  }
+
   /*
-  if (ps->o.paint_on_overlay) {
-    return ps->root_picture;
-  } */
+   * A picture will help
+   *
+   *      -center   0                width  width+center
+   *  -center +-----+-------------------+-----+
+   *          |     |                   |     |
+   *          |     |                   |     |
+   *        0 +-----+-------------------+-----+
+   *          |     |                   |     |
+   *          |     |                   |     |
+   *          |     |                   |     |
+   *   height +-----+-------------------+-----+
+   *          |     |                   |     |
+   * height+  |     |                   |     |
+   *  center  +-----+-------------------+-----+
+   */
 
-  assert(!ps->root_tile_paint.pixmap);
-  ps->root_tile_fill = false;
+  static unsigned char
+  sum_gaussian(conv *map, double opacity,
+               int x, int y, int width, int height) {
+    int fx, fy;
+    double *g_data;
+    double *g_line = map->data;
+    int g_size = map->size;
+    int center = g_size / 2;
+    int fx_start, fx_end;
+    int fy_start, fy_end;
+    double v;
 
-  bool fill = false;
-  Pixmap pixmap = None;
-
-  // Get the values of background attributes
-  for (int p = 0; background_props_str[p]; p++) {
-    winprop_t prop = wid_get_prop(ps, ps->root,
-        get_atom(ps, background_props_str[p]),
-        1L, XA_PIXMAP, 32);
-    if (prop.nitems) {
-      pixmap = *prop.data.p32;
-      fill = false;
-      free_winprop(&prop);
-      break;
-    }
-    free_winprop(&prop);
-  }
-
-  // Make sure the pixmap we got is valid
-  if (pixmap && !validate_pixmap(ps, pixmap))
-    pixmap = None;
-
-  // Create a pixmap if there isn't any
-  if (!pixmap) {
-    pixmap = XCreatePixmap(ps->dpy, ps->root, 1, 1, ps->depth);
-    fill = true;
-  }
-
-  // Create Picture
-  {
-    XRenderPictureAttributes pa = {
-      .repeat = True,
-    };
-    ps->root_tile_paint.pict = XRenderCreatePicture(
-        ps->dpy, pixmap, XRenderFindVisualFormat(ps->dpy, ps->vis),
-        CPRepeat, &pa);
-  }
-
-  // Fill pixmap if needed
-  if (fill) {
-    XRenderColor  c;
-
-    c.red = c.green = c.blue = 0x8080;
-    c.alpha = 0xffff;
-    XRenderFillRectangle(ps->dpy, PictOpSrc, ps->root_tile_paint.pict, &c, 0, 0, 1, 1);
-  }
-
-  ps->root_tile_fill = fill;
-  ps->root_tile_paint.pixmap = pixmap;
-#ifdef CONFIG_VSYNC_OPENGL
-  if (BKEND_GLX == ps->o.backend)
-    return glx_bind_pixmap(ps, &ps->root_tile_paint.ptex, ps->root_tile_paint.pixmap, 0, 0, 0);
-#endif
-
-  return true;
-}
-
-/**
- * Paint root window content.
- */
-static void
-paint_root(session_t *ps, XserverRegion reg_paint) {
-  if (!ps->root_tile_paint.pixmap)
-    get_root_tile(ps);
-
-  win_render(ps, NULL, 0, 0, ps->root_width, ps->root_height, 1.0, reg_paint,
-      NULL, ps->root_tile_paint.pict);
-}
-
-/**
- * Get a rectangular region a window occupies, excluding shadow.
- */
-static XserverRegion
-win_get_region(session_t *ps, win *w, bool use_offset) {
-  XRectangle r;
-
-  r.x = (use_offset ? w->a.x: 0);
-  r.y = (use_offset ? w->a.y: 0);
-  r.width = w->widthb;
-  r.height = w->heightb;
-
-  return XFixesCreateRegion(ps->dpy, &r, 1);
-}
-
-/**
- * Get a rectangular region a window occupies, excluding frame and shadow.
- */
-static XserverRegion
-win_get_region_noframe(session_t *ps, win *w, bool use_offset) {
-  const margin_t extents = win_calc_frame_extents(ps, w);
-  XRectangle r;
-
-  r.x = (use_offset ? w->a.x: 0) + extents.left;
-  r.y = (use_offset ? w->a.y: 0) + extents.top;
-  r.width = max_i(w->a.width - extents.left - extents.right, 0);
-  r.height = max_i(w->a.height - extents.top - extents.bottom, 0);
-
-  if (r.width > 0 && r.height > 0)
-    return XFixesCreateRegion(ps->dpy, &r, 1);
-  else
-    return XFixesCreateRegion(ps->dpy, NULL, 0);
-}
-
-/**
- * Get a rectangular region a window (and possibly its shadow) occupies.
- *
- * Note w->shadow and shadow geometry must be correct before calling this
- * function.
- */
-static XserverRegion
-win_extents(session_t *ps, win *w) {
-  XRectangle r;
-
-  r.x = w->a.x;
-  r.y = w->a.y;
-  r.width = w->widthb;
-  r.height = w->heightb;
-
-  if (w->shadow) {
-    XRectangle sr;
-
-    sr.x = w->a.x + w->shadow_dx;
-    sr.y = w->a.y + w->shadow_dy;
-    sr.width = w->shadow_width;
-    sr.height = w->shadow_height;
-
-    if (sr.x < r.x) {
-      r.width = (r.x + r.width) - sr.x;
-      r.x = sr.x;
-    }
-
-    if (sr.y < r.y) {
-      r.height = (r.y + r.height) - sr.y;
-      r.y = sr.y;
-    }
-
-    if (sr.x + sr.width > r.x + r.width) {
-      r.width = sr.x + sr.width - r.x;
-    }
-
-    if (sr.y + sr.height > r.y + r.height) {
-      r.height = sr.y + sr.height - r.y;
-    }
-  }
-
-  return XFixesCreateRegion(ps->dpy, &r, 1);
-}
-
-/**
- * Retrieve the bounding shape of a window.
- */
-static XserverRegion
-border_size(session_t *ps, win *w, bool use_offset) {
-  // Start with the window rectangular region
-  XserverRegion fin = win_get_region(ps, w, use_offset);
-
-  // Only request for a bounding region if the window is shaped
-  if (w->bounding_shaped) {
     /*
-     * if window doesn't exist anymore,  this will generate an error
-     * as well as not generate a region.  Perhaps a better XFixes
-     * architecture would be to have a request that copies instead
-     * of creates, that way you'd just end up with an empty region
-     * instead of an invalid XID.
+     * Compute set of filter values which are "in range",
+     * that's the set with:
+     *    0 <= x + (fx-center) && x + (fx-center) < width &&
+     *  0 <= y + (fy-center) && y + (fy-center) < height
+     *
+     *  0 <= x + (fx - center)    x + fx - center < width
+     *  center - x <= fx    fx < width + center - x
      */
 
-    XserverRegion border = XFixesCreateRegionFromWindow(
-      ps->dpy, w->id, WindowRegionBounding);
+    fx_start = center - x;
+    if (fx_start < 0) fx_start = 0;
+    fx_end = width + center - x;
+    if (fx_end > g_size) fx_end = g_size;
 
-    if (!border)
-      return fin;
+    fy_start = center - y;
+    if (fy_start < 0) fy_start = 0;
+    fy_end = height + center - y;
+    if (fy_end > g_size) fy_end = g_size;
 
-    if (use_offset) {
-      // Translate the region to the correct place
-      XFixesTranslateRegion(ps->dpy, border,
-        w->a.x + w->a.border_width,
-        w->a.y + w->a.border_width);
+    g_line = g_line + fy_start * g_size + fx_start;
+
+    v = 0;
+
+    for (fy = fy_start; fy < fy_end; fy++) {
+      g_data = g_line;
+      g_line += g_size;
+
+      for (fx = fx_start; fx < fx_end; fx++) {
+        v += *g_data++;
+      }
     }
 
-    // Intersect the bounding region we got with the window rectangle, to
-    // make sure the bounding region is not bigger than the window
-    // rectangle
-    XFixesIntersectRegion(ps->dpy, fin, fin, border);
-    XFixesDestroyRegion(ps->dpy, border);
+    if (v > 1) v = 1;
+
+    return ((unsigned char) (v * opacity * 255.0));
   }
 
-  return fin;
-}
+  /* precompute shadow corners and sides
+     to save time for large windows */
 
-/**
- * Look for the client window of a particular window.
- */
-static Window
-find_client_win(session_t *ps, Window w) {
-  if (wid_has_prop(ps, w, ps->atom_client)) {
+  static void
+  presum_gaussian(session_t *ps, conv *map) {
+    int center = map->size / 2;
+    int opacity, x, y;
+
+    ps->cgsize = map->size;
+
+    if (ps->shadow_corner)
+      free(ps->shadow_corner);
+    if (ps->shadow_top)
+      free(ps->shadow_top);
+
+    ps->shadow_corner = malloc((ps->cgsize + 1) * (ps->cgsize + 1) * 26);
+    ps->shadow_top = malloc((ps->cgsize + 1) * 26);
+
+    for (x = 0; x <= ps->cgsize; x++) {
+      ps->shadow_top[25 * (ps->cgsize + 1) + x] =
+        sum_gaussian(map, 1, x - center, center, ps->cgsize * 2, ps->cgsize * 2);
+
+      for (opacity = 0; opacity < 25; opacity++) {
+        ps->shadow_top[opacity * (ps->cgsize + 1) + x] =
+          ps->shadow_top[25 * (ps->cgsize + 1) + x] * opacity / 25;
+      }
+
+      for (y = 0; y <= x; y++) {
+        ps->shadow_corner[25 * (ps->cgsize + 1) * (ps->cgsize + 1) + y * (ps->cgsize + 1) + x]
+          = sum_gaussian(map, 1, x - center, y - center, ps->cgsize * 2, ps->cgsize * 2);
+        ps->shadow_corner[25 * (ps->cgsize + 1) * (ps->cgsize + 1) + x * (ps->cgsize + 1) + y]
+          = ps->shadow_corner[25 * (ps->cgsize + 1) * (ps->cgsize + 1) + y * (ps->cgsize + 1) + x];
+
+        for (opacity = 0; opacity < 25; opacity++) {
+          ps->shadow_corner[opacity * (ps->cgsize + 1) * (ps->cgsize + 1)
+                        + y * (ps->cgsize + 1) + x]
+            = ps->shadow_corner[opacity * (ps->cgsize + 1) * (ps->cgsize + 1)
+                            + x * (ps->cgsize + 1) + y]
+            = ps->shadow_corner[25 * (ps->cgsize + 1) * (ps->cgsize + 1)
+                            + y * (ps->cgsize + 1) + x] * opacity / 25;
+        }
+      }
+    }
+  }
+
+  static XImage *
+  make_shadow(session_t *ps, double opacity,
+              int width, int height) {
+    XImage *ximage;
+    unsigned char *data;
+    int ylimit, xlimit;
+    int swidth = width + ps->cgsize;
+    int sheight = height + ps->cgsize;
+    int center = ps->cgsize / 2;
+    int x, y;
+    unsigned char d;
+    int x_diff;
+    int opacity_int = (int)(opacity * 25);
+
+    data = malloc(swidth * sheight * sizeof(unsigned char));
+    if (!data) return 0;
+
+    ximage = XCreateImage(ps->dpy, ps->vis, 8,
+      ZPixmap, 0, (char *) data, swidth, sheight, 8, swidth * sizeof(char));
+
+    if (!ximage) {
+      free(data);
+      return 0;
+    }
+
+    /*
+     * Build the gaussian in sections
+     */
+
+    /*
+     * center (fill the complete data array)
+     */
+
+    // If clear_shadow is enabled and the border & corner shadow (which
+    // later will be filled) could entirely cover the area of the shadow
+    // that will be displayed, do not bother filling other pixels. If it
+    // can't, we must fill the other pixels here.
+    /* if (!(clear_shadow && ps->o.shadow_offset_x <= 0 && ps->o.shadow_offset_x >= -ps->cgsize
+          && ps->o.shadow_offset_y <= 0 && ps->o.shadow_offset_y >= -ps->cgsize)) { */
+      if (ps->cgsize > 0) {
+        d = ps->shadow_top[opacity_int * (ps->cgsize + 1) + ps->cgsize];
+      } else {
+        d = sum_gaussian(ps->gaussian_map,
+          opacity, center, center, width, height);
+      }
+      memset(data, d, sheight * swidth);
+    // }
+
+    /*
+     * corners
+     */
+
+    ylimit = ps->cgsize;
+    if (ylimit > sheight / 2) ylimit = (sheight + 1) / 2;
+
+    xlimit = ps->cgsize;
+    if (xlimit > swidth / 2) xlimit = (swidth + 1) / 2;
+
+    for (y = 0; y < ylimit; y++) {
+      for (x = 0; x < xlimit; x++) {
+        if (xlimit == ps->cgsize && ylimit == ps->cgsize) {
+          d = ps->shadow_corner[opacity_int * (ps->cgsize + 1) * (ps->cgsize + 1)
+                            + y * (ps->cgsize + 1) + x];
+        } else {
+          d = sum_gaussian(ps->gaussian_map,
+            opacity, x - center, y - center, width, height);
+        }
+        data[y * swidth + x] = d;
+        data[(sheight - y - 1) * swidth + x] = d;
+        data[(sheight - y - 1) * swidth + (swidth - x - 1)] = d;
+        data[y * swidth + (swidth - x - 1)] = d;
+      }
+    }
+
+    /*
+     * top/bottom
+     */
+
+    x_diff = swidth - (ps->cgsize * 2);
+    if (x_diff > 0 && ylimit > 0) {
+      for (y = 0; y < ylimit; y++) {
+        if (ylimit == ps->cgsize) {
+          d = ps->shadow_top[opacity_int * (ps->cgsize + 1) + y];
+        } else {
+          d = sum_gaussian(ps->gaussian_map,
+            opacity, center, y - center, width, height);
+        }
+        memset(&data[y * swidth + ps->cgsize], d, x_diff);
+        memset(&data[(sheight - y - 1) * swidth + ps->cgsize], d, x_diff);
+      }
+    }
+
+    /*
+     * sides
+     */
+
+    for (x = 0; x < xlimit; x++) {
+      if (xlimit == ps->cgsize) {
+        d = ps->shadow_top[opacity_int * (ps->cgsize + 1) + x];
+      } else {
+        d = sum_gaussian(ps->gaussian_map,
+          opacity, x - center, center, width, height);
+      }
+      for (y = ps->cgsize; y < sheight - ps->cgsize; y++) {
+        data[y * swidth + x] = d;
+        data[y * swidth + (swidth - x - 1)] = d;
+      }
+    }
+
+    /*
+    if (clear_shadow) {
+      // Clear the region in the shadow that the window would cover based
+      // on shadow_offset_{x,y} user provides
+      int xstart = normalize_i_range(- (int) ps->o.shadow_offset_x, 0, swidth);
+      int xrange = normalize_i_range(width - (int) ps->o.shadow_offset_x,
+          0, swidth) - xstart;
+      int ystart = normalize_i_range(- (int) ps->o.shadow_offset_y, 0, sheight);
+      int yend = normalize_i_range(height - (int) ps->o.shadow_offset_y,
+          0, sheight);
+      int y;
+
+      for (y = ystart; y < yend; y++) {
+        memset(&data[y * swidth + xstart], 0, xrange);
+      }
+    }
+    */
+
+    return ximage;
+  }
+
+  /**
+   * Generate shadow <code>Picture</code> for a window.
+   */
+  static bool
+  win_build_shadow(session_t *ps, win *w, double opacity) {
+    const int width = w->widthb;
+    const int height = w->heightb;
+
+    XImage *shadow_image = NULL;
+    Pixmap shadow_pixmap = None, shadow_pixmap_argb = None;
+    Picture shadow_picture = None, shadow_picture_argb = None;
+    GC gc = None;
+
+    shadow_image = make_shadow(ps, opacity, width, height);
+    if (!shadow_image)
+      return None;
+
+    shadow_pixmap = XCreatePixmap(ps->dpy, ps->root,
+      shadow_image->width, shadow_image->height, 8);
+    shadow_pixmap_argb = XCreatePixmap(ps->dpy, ps->root,
+      shadow_image->width, shadow_image->height, 32);
+
+    if (!shadow_pixmap || !shadow_pixmap_argb)
+      goto shadow_picture_err;
+
+    shadow_picture = XRenderCreatePicture(ps->dpy, shadow_pixmap,
+      XRenderFindStandardFormat(ps->dpy, PictStandardA8), 0, 0);
+    shadow_picture_argb = XRenderCreatePicture(ps->dpy, shadow_pixmap_argb,
+      XRenderFindStandardFormat(ps->dpy, PictStandardARGB32), 0, 0);
+    if (!shadow_picture || !shadow_picture_argb)
+      goto shadow_picture_err;
+
+    gc = XCreateGC(ps->dpy, shadow_pixmap, 0, 0);
+    if (!gc)
+      goto shadow_picture_err;
+
+    XPutImage(ps->dpy, shadow_pixmap, gc, shadow_image, 0, 0, 0, 0,
+      shadow_image->width, shadow_image->height);
+    XRenderComposite(ps->dpy, PictOpSrc, ps->cshadow_picture, shadow_picture,
+        shadow_picture_argb, 0, 0, 0, 0, 0, 0,
+        shadow_image->width, shadow_image->height);
+
+    assert(!w->shadow_paint.pixmap);
+    w->shadow_paint.pixmap = shadow_pixmap_argb;
+    assert(!w->shadow_paint.pict);
+    w->shadow_paint.pict = shadow_picture_argb;
+
+    // Sync it once and only once
+    xr_sync(ps, w->shadow_paint.pixmap, NULL);
+
+    XFreeGC(ps->dpy, gc);
+    XDestroyImage(shadow_image);
+    XFreePixmap(ps->dpy, shadow_pixmap);
+    XRenderFreePicture(ps->dpy, shadow_picture);
+
+    return true;
+
+  shadow_picture_err:
+    if (shadow_image)
+      XDestroyImage(shadow_image);
+    if (shadow_pixmap)
+      XFreePixmap(ps->dpy, shadow_pixmap);
+    if (shadow_pixmap_argb)
+      XFreePixmap(ps->dpy, shadow_pixmap_argb);
+    if (shadow_picture)
+      XRenderFreePicture(ps->dpy, shadow_picture);
+    if (shadow_picture_argb)
+      XRenderFreePicture(ps->dpy, shadow_picture_argb);
+    if (gc)
+      XFreeGC(ps->dpy, gc);
+
+    return false;
+  }
+
+  /**
+   * Generate a 1x1 <code>Picture</code> of a particular color.
+   */
+  static Picture
+  solid_picture(session_t *ps, bool argb, double a,
+                double r, double g, double b) {
+    Pixmap pixmap;
+    Picture picture;
+    XRenderPictureAttributes pa;
+    XRenderColor c;
+
+    pixmap = XCreatePixmap(ps->dpy, ps->root, 1, 1, argb ? 32 : 8);
+
+    if (!pixmap) return None;
+
+    pa.repeat = True;
+    picture = XRenderCreatePicture(ps->dpy, pixmap,
+      XRenderFindStandardFormat(ps->dpy, argb
+        ? PictStandardARGB32 : PictStandardA8),
+      CPRepeat,
+      &pa);
+
+    if (!picture) {
+      XFreePixmap(ps->dpy, pixmap);
+      return None;
+    }
+
+    c.alpha = a * 0xffff;
+    c.red =   r * 0xffff;
+    c.green = g * 0xffff;
+    c.blue =  b * 0xffff;
+
+    XRenderFillRectangle(ps->dpy, PictOpSrc, picture, &c, 0, 0, 1, 1);
+    XFreePixmap(ps->dpy, pixmap);
+
+    return picture;
+  }
+
+  // === Error handling ===
+
+  static void
+  discard_ignore(session_t *ps, unsigned long sequence) {
+    while (ps->ignore_head) {
+      if ((long) (sequence - ps->ignore_head->sequence) > 0) {
+        ignore_t *next = ps->ignore_head->next;
+        free(ps->ignore_head);
+        ps->ignore_head = next;
+        if (!ps->ignore_head) {
+          ps->ignore_tail = &ps->ignore_head;
+        }
+      } else {
+        break;
+      }
+    }
+  }
+
+  static void
+  set_ignore(session_t *ps, unsigned long sequence) {
+    if (ps->o.show_all_xerrors)
+      return;
+
+    ignore_t *i = malloc(sizeof(ignore_t));
+    if (!i) return;
+
+    i->sequence = sequence;
+    i->next = 0;
+    *ps->ignore_tail = i;
+    ps->ignore_tail = &i->next;
+  }
+
+  static int
+  should_ignore(session_t *ps, unsigned long sequence) {
+    discard_ignore(ps, sequence);
+    return ps->ignore_head && ps->ignore_head->sequence == sequence;
+  }
+
+  // === Windows ===
+
+  /**
+   * Get a specific attribute of a window.
+   *
+   * Returns a blank structure if the returned type and format does not
+   * match the requested type and format.
+   *
+   * @param ps current session
+   * @param w window
+   * @param atom atom of attribute to fetch
+   * @param length length to read
+   * @param rtype atom of the requested type
+   * @param rformat requested format
+   * @return a <code>winprop_t</code> structure containing the attribute
+   *    and number of items. A blank one on failure.
+   */
+  winprop_t
+  wid_get_prop_adv(const session_t *ps, Window w, Atom atom, long offset,
+      long length, Atom rtype, int rformat) {
+    Atom type = None;
+    int format = 0;
+    unsigned long nitems = 0, after = 0;
+    unsigned char *data = NULL;
+
+    if (Success == XGetWindowProperty(ps->dpy, w, atom, offset, length,
+          False, rtype, &type, &format, &nitems, &after, &data)
+        && nitems && (AnyPropertyType == type || type == rtype)
+        && (!rformat || format == rformat)
+        && (8 == format || 16 == format || 32 == format)) {
+        return (winprop_t) {
+          .data.p8 = data,
+          .nitems = nitems,
+          .type = type,
+          .format = format,
+        };
+    }
+
+    cxfree(data);
+
+    return (winprop_t) {
+      .data.p8 = NULL,
+      .nitems = 0,
+      .type = AnyPropertyType,
+      .format = 0
+    };
+  }
+
+  /**
+   * Check if a window has rounded corners.
+   */
+  static void
+  win_rounded_corners(session_t *ps, win *w) {
+    w->rounded_corners = false;
+
+    if (!w->bounding_shaped)
+      return;
+
+    // Fetch its bounding region
+    if (!w->border_size)
+      w->border_size = border_size(ps, w, true);
+
+    // Quit if border_size() returns None
+    if (!w->border_size)
+      return;
+
+    // Determine the minimum width/height of a rectangle that could mark
+    // a window as having rounded corners
+    unsigned short minwidth = max_i(w->widthb * (1 - ROUNDED_PERCENT),
+        w->widthb - ROUNDED_PIXELS);
+    unsigned short minheight = max_i(w->heightb * (1 - ROUNDED_PERCENT),
+        w->heightb - ROUNDED_PIXELS);
+
+    // Get the rectangles in the bounding region
+    int nrects = 0, i;
+    XRectangle *rects = XFixesFetchRegion(ps->dpy, w->border_size, &nrects);
+    if (!rects)
+      return;
+
+    // Look for a rectangle large enough for this window be considered
+    // having rounded corners
+    for (i = 0; i < nrects; ++i)
+      if (rects[i].width >= minwidth && rects[i].height >= minheight) {
+        w->rounded_corners = true;
+        break;
+      }
+
+    cxfree(rects);
+  }
+
+  /**
+   * Add a pattern to a condition linked list.
+   */
+  static bool
+  condlst_add(session_t *ps, c2_lptr_t **pcondlst, const char *pattern) {
+    if (!pattern)
+      return false;
+
+  #ifdef CONFIG_C2
+    if (!c2_parse(ps, pcondlst, pattern))
+      exit(1);
+  #else
+    printf_errfq(1, "(): Condition support not compiled in.");
+  #endif
+
+    return true;
+  }
+
+  /**
+   * Determine the event mask for a window.
+   */
+  static long
+  determine_evmask(session_t *ps, Window wid, win_evmode_t mode) {
+    long evmask = NoEventMask;
+    win *w = NULL;
+
+    // Check if it's a mapped frame window
+    if (WIN_EVMODE_FRAME == mode
+        || ((w = find_win(ps, wid)) && IsViewable == w->a.map_state)) {
+      evmask |= PropertyChangeMask;
+      if (ps->o.track_focus && !ps->o.use_ewmh_active_win)
+        evmask |= FocusChangeMask;
+    }
+
+    // Check if it's a mapped client window
+    if (WIN_EVMODE_CLIENT == mode
+        || ((w = find_toplevel(ps, wid)) && IsViewable == w->a.map_state)) {
+      if (ps->o.frame_opacity || ps->o.track_wdata || ps->track_atom_lst
+          || ps->o.detect_client_opacity)
+        evmask |= PropertyChangeMask;
+    }
+
+    return evmask;
+  }
+
+  /**
+   * Find out the WM frame of a client window by querying X.
+   *
+   * @param ps current session
+   * @param wid window ID
+   * @return struct _win object of the found window, NULL if not found
+   */
+  static win *
+  find_toplevel2(session_t *ps, Window wid) {
+    win *w = NULL;
+
+    // We traverse through its ancestors to find out the frame
+    while (wid && wid != ps->root && !(w = find_win(ps, wid))) {
+      Window troot;
+      Window parent;
+      Window *tchildren;
+      unsigned tnchildren;
+
+      // XQueryTree probably fails if you run compton when X is somehow
+      // initializing (like add it in .xinitrc). In this case
+      // just leave it alone.
+      if (!XQueryTree(ps->dpy, wid, &troot, &parent, &tchildren,
+            &tnchildren)) {
+        parent = 0;
+        break;
+      }
+
+      cxfree(tchildren);
+
+      wid = parent;
+    }
+
     return w;
   }
 
-  Window *children;
-  unsigned int nchildren;
-  unsigned int i;
-  Window ret = 0;
+  /**
+   * Recheck currently focused window and set its <code>w->focused</code>
+   * to true.
+   *
+   * @param ps current session
+   * @return struct _win of currently focused window, NULL if not found
+   */
+  static win *
+  recheck_focus(session_t *ps) {
+    // Use EWMH _NET_ACTIVE_WINDOW if enabled
+    if (ps->o.use_ewmh_active_win) {
+      update_ewmh_active_win(ps);
+      return ps->active_win;
+    }
 
-  if (!wid_get_children(ps, w, &children, &nchildren)) {
-    return 0;
+    // Determine the currently focused window so we can apply appropriate
+    // opacity on it
+    Window wid = 0;
+    int revert_to;
+
+    XGetInputFocus(ps->dpy, &wid, &revert_to);
+
+    win *w = find_win_all(ps, wid);
+
+  #ifdef DEBUG_EVENTS
+    print_timestamp(ps);
+    printf_dbgf("(): %#010lx (%#010lx \"%s\") focused.\n", wid,
+        (w ? w->id: None), (w ? w->name: NULL));
+  #endif
+
+    // And we set the focus state here
+    if (w) {
+      win_set_focused(ps, w, true);
+      return w;
+    }
+
+    return NULL;
   }
 
-  for (i = 0; i < nchildren; ++i) {
-    if ((ret = find_client_win(ps, children[i])))
-      break;
+  static bool
+  get_root_tile(session_t *ps) {
+    /*
+    if (ps->o.paint_on_overlay) {
+      return ps->root_picture;
+    } */
+
+    assert(!ps->root_tile_paint.pixmap);
+    ps->root_tile_fill = false;
+
+    bool fill = false;
+    Pixmap pixmap = None;
+
+    // Get the values of background attributes
+    for (int p = 0; background_props_str[p]; p++) {
+      winprop_t prop = wid_get_prop(ps, ps->root,
+          get_atom(ps, background_props_str[p]),
+          1L, XA_PIXMAP, 32);
+      if (prop.nitems) {
+        pixmap = *prop.data.p32;
+        fill = false;
+        free_winprop(&prop);
+        break;
+      }
+      free_winprop(&prop);
+    }
+
+    // Make sure the pixmap we got is valid
+    if (pixmap && !validate_pixmap(ps, pixmap))
+      pixmap = None;
+
+    // Create a pixmap if there isn't any
+    if (!pixmap) {
+      pixmap = XCreatePixmap(ps->dpy, ps->root, 1, 1, ps->depth);
+      fill = true;
+    }
+
+    // Create Picture
+    {
+      XRenderPictureAttributes pa = {
+        .repeat = True,
+      };
+      ps->root_tile_paint.pict = XRenderCreatePicture(
+          ps->dpy, pixmap, XRenderFindVisualFormat(ps->dpy, ps->vis),
+          CPRepeat, &pa);
+    }
+
+    // Fill pixmap if needed
+    if (fill) {
+      XRenderColor  c;
+
+      c.red = c.green = c.blue = 0x8080;
+      c.alpha = 0xffff;
+      XRenderFillRectangle(ps->dpy, PictOpSrc, ps->root_tile_paint.pict, &c, 0, 0, 1, 1);
+    }
+
+    ps->root_tile_fill = fill;
+    ps->root_tile_paint.pixmap = pixmap;
+  #ifdef CONFIG_VSYNC_OPENGL
+    if (BKEND_GLX == ps->o.backend)
+      return glx_bind_pixmap(ps, &ps->root_tile_paint.ptex, ps->root_tile_paint.pixmap, 0, 0, 0);
+  #endif
+
+    return true;
   }
 
-  cxfree(children);
+  /**
+   * Paint root window content.
+   */
+  static void
+  paint_root(session_t *ps, XserverRegion reg_paint) {
+    if (!ps->root_tile_paint.pixmap)
+      get_root_tile(ps);
 
-  return ret;
-}
-
-/**
- * Retrieve frame extents from a window.
- */
-static void
-get_frame_extents(session_t *ps, win *w, Window client) {
-  cmemzero_one(&w->frame_extents);
-
-  winprop_t prop = wid_get_prop(ps, client, ps->atom_frame_extents,
-    4L, XA_CARDINAL, 32);
-
-  if (4 == prop.nitems) {
-    const long * const extents = prop.data.p32;
-    w->frame_extents.left = extents[0];
-    w->frame_extents.right = extents[1];
-    w->frame_extents.top = extents[2];
-    w->frame_extents.bottom = extents[3];
-
-    if (ps->o.frame_opacity)
-      update_reg_ignore_expire(ps, w);
+    win_render(ps, NULL, 0, 0, ps->root_width, ps->root_height, 1.0, reg_paint,
+        NULL, ps->root_tile_paint.pict);
   }
 
-#ifdef DEBUG_FRAME
-  printf_dbgf("(%#010lx): %d, %d, %d, %d\n", w->id,
+  /**
+   * Get a rectangular region a window occupies, excluding shadow.
+   */
+  static XserverRegion
+  win_get_region(session_t *ps, win *w, bool use_offset) {
+    XRectangle r;
+
+    r.x = (use_offset ? w->a.x: 0);
+    r.y = (use_offset ? w->a.y: 0);
+    r.width = w->widthb;
+    r.height = w->heightb;
+
+    return XFixesCreateRegion(ps->dpy, &r, 1);
+  }
+
+  /**
+   * Get a rectangular region a window occupies, excluding frame and shadow.
+   */
+  static XserverRegion
+  win_get_region_noframe(session_t *ps, win *w, bool use_offset) {
+    const margin_t extents = win_calc_frame_extents(ps, w);
+    XRectangle r;
+
+    r.x = (use_offset ? w->a.x: 0) + extents.left;
+    r.y = (use_offset ? w->a.y: 0) + extents.top;
+    r.width = max_i(w->a.width - extents.left - extents.right, 0);
+    r.height = max_i(w->a.height - extents.top - extents.bottom, 0);
+
+    if (r.width > 0 && r.height > 0)
+      return XFixesCreateRegion(ps->dpy, &r, 1);
+    else
+      return XFixesCreateRegion(ps->dpy, NULL, 0);
+  }
+
+  /**
+   * Get a rectangular region a window (and possibly its shadow) occupies.
+   *
+   * Note w->shadow and shadow geometry must be correct before calling this
+   * function.
+   */
+  static XserverRegion
+  win_extents(session_t *ps, win *w) {
+    XRectangle r;
+
+    r.x = w->a.x;
+    r.y = w->a.y;
+    r.width = w->widthb;
+    r.height = w->heightb;
+
+    if (w->shadow) {
+      XRectangle sr;
+
+      sr.x = w->a.x + w->shadow_dx;
+      sr.y = w->a.y + w->shadow_dy;
+      sr.width = w->shadow_width;
+      sr.height = w->shadow_height;
+
+      if (sr.x < r.x) {
+        r.width = (r.x + r.width) - sr.x;
+        r.x = sr.x;
+      }
+
+      if (sr.y < r.y) {
+        r.height = (r.y + r.height) - sr.y;
+        r.y = sr.y;
+      }
+
+      if (sr.x + sr.width > r.x + r.width) {
+        r.width = sr.x + sr.width - r.x;
+      }
+
+      if (sr.y + sr.height > r.y + r.height) {
+        r.height = sr.y + sr.height - r.y;
+      }
+    }
+
+    return XFixesCreateRegion(ps->dpy, &r, 1);
+  }
+
+  /**
+   * Retrieve the bounding shape of a window.
+   */
+  static XserverRegion
+  border_size(session_t *ps, win *w, bool use_offset) {
+    // Start with the window rectangular region
+    XserverRegion fin = win_get_region(ps, w, use_offset);
+
+    // Only request for a bounding region if the window is shaped
+    if (w->bounding_shaped) {
+      /*
+       * if window doesn't exist anymore,  this will generate an error
+       * as well as not generate a region.  Perhaps a better XFixes
+       * architecture would be to have a request that copies instead
+       * of creates, that way you'd just end up with an empty region
+       * instead of an invalid XID.
+       */
+
+      XserverRegion border = XFixesCreateRegionFromWindow(
+        ps->dpy, w->id, WindowRegionBounding);
+
+      if (!border)
+        return fin;
+
+      if (use_offset) {
+        // Translate the region to the correct place
+        XFixesTranslateRegion(ps->dpy, border,
+          w->a.x + w->a.border_width,
+          w->a.y + w->a.border_width);
+      }
+
+      // Intersect the bounding region we got with the window rectangle, to
+      // make sure the bounding region is not bigger than the window
+      // rectangle
+      XFixesIntersectRegion(ps->dpy, fin, fin, border);
+      XFixesDestroyRegion(ps->dpy, border);
+    }
+
+    return fin;
+  }
+
+  /**
+   * Look for the client window of a particular window.
+   */
+  static Window
+  find_client_win(session_t *ps, Window w) {
+    if (wid_has_prop(ps, w, ps->atom_client)) {
+      return w;
+    }
+
+    Window *children;
+    unsigned int nchildren;
+    unsigned int i;
+    Window ret = 0;
+
+    if (!wid_get_children(ps, w, &children, &nchildren)) {
+      return 0;
+    }
+
+    for (i = 0; i < nchildren; ++i) {
+      if ((ret = find_client_win(ps, children[i])))
+        break;
+    }
+
+    cxfree(children);
+
+    return ret;
+  }
+
+  /**
+   * Retrieve frame extents from a window.
+   */
+  static void
+  get_frame_extents(session_t *ps, win *w, Window client) {
+    cmemzero_one(&w->frame_extents);
+
+    winprop_t prop = wid_get_prop(ps, client, ps->atom_frame_extents,
+      4L, XA_CARDINAL, 32);
+
+    if (4 == prop.nitems) {
+      const long * const extents = prop.data.p32;
+      w->frame_extents.left = extents[0];
+      w->frame_extents.right = extents[1];
+      w->frame_extents.top = extents[2];
+      w->frame_extents.bottom = extents[3];
+
+      if (ps->o.frame_opacity)
+        update_reg_ignore_expire(ps, w);
+    }
+
+  #ifdef DEBUG_FRAME
+    printf_dbgf("(%#010lx): %d, %d, %d, %d\n", w->id,
       w->frame_extents.left, w->frame_extents.right,
       w->frame_extents.top, w->frame_extents.bottom);
 #endif
@@ -1107,6 +1110,7 @@ paint_preprocess(session_t *ps, win *list) {
     next = w->next;
     opacity_t opacity_old = w->opacity;
 
+
     // Data expiration
     {
       // Remove built shadow if needed
@@ -1131,6 +1135,8 @@ paint_preprocess(session_t *ps, win *list) {
       calc_opacity(ps, w);
       calc_dim(ps, w);
     }
+    
+    animate_window(w, ps);
 
     // Run fading
     run_fade(ps, w, steps);
@@ -1520,6 +1526,18 @@ render_(session_t *ps, int x, int y, int dx, int dy, int wid, int hei,
     , const glx_prog_main_t *pprogram
 #endif
     ) {
+
+  /* XRectangle rec = { */
+  /*   .x = 0, */
+  /*   .y = 0, */
+  /*   .width = 1920, */
+  /*   .height = 1080 */
+  /* }; */
+  /* XserverRegion reg_hack = XFixesCreateRegion(ps->dpy, */
+  /*     &rec, 1); */
+  /*  */
+  /* reg_paint = reg_hack; */
+
   switch (ps->o.backend) {
     case BKEND_XRENDER:
     case BKEND_XR_GLX_HYBRID:
@@ -1542,6 +1560,7 @@ render_(session_t *ps, int x, int y, int dx, int dy, int wid, int hei,
     default:
       assert(0);
   }
+  printf("%d, %d, %d, %d\n", dx, dy, wid, hei);
 }
 
 /**
@@ -3073,6 +3092,29 @@ static bool
 init_filters(session_t *ps);
 
 static void
+animate_window(win * w, session_t * ps) {
+  if (!w->inTransition) return;
+
+  const long animLen = 5*1000;
+  long currentTime = clock();
+  
+  if (currentTime - w->time_transStart >= animLen) {
+    w->a.x = w->targetX;
+    w->a.y = w->targetY;
+    w->inTransition = false;
+  } else {
+    float q = (float) (currentTime - w->time_transStart)/animLen;
+    w->a.x = w->fromX + (w->targetX - w->fromX) * q;
+    w->a.y = w->fromY + (w->targetY - w->fromY) * q;
+  }
+
+  w->to_paint = true;
+  w->damaged = true;
+  /* force_repaint(ps); */
+  printf("Moved the window, bitch!\n");
+}
+
+static void
 configure_win(session_t *ps, XConfigureEvent *ce) {
   // On root window changes
   if (ce->window == ps->root) {
@@ -3149,8 +3191,27 @@ configure_win(session_t *ps, XConfigureEvent *ce) {
       free_region(ps, &w->border_size);
     }
 
-    w->a.x = ce->x;
-    w->a.y = ce->y;
+    // If window position changed
+    if (w->a.x != ce->x || w->a.y != ce->y) {
+      w->inTransition = true;
+      w->time_transStart = clock();
+      w->fromX = w->a.x;
+      w->fromY = w->a.y;
+      w->targetX = ce->x;
+      w->targetY = ce->y;
+      /* printf("%ld\n", clock()); */
+      /* printf("%d, %d -> %d, %d\n", w->a.x, w->a.y, ce->x, ce->y); */
+
+      ps->idling = false;
+    }
+
+    // WINDOW POSITION 
+    if (w->inTransition) {
+      animate_window(w, ps);
+    } else {
+      w->a.x = ce->x;
+      w->a.y = ce->y;
+    }
 
     if (w->a.width != ce->width || w->a.height != ce->height
         || w->a.border_width != ce->border_width)

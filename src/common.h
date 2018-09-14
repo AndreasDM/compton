@@ -1232,6 +1232,11 @@ typedef struct _win {
   /// Textures and FBO background blur use.
   glx_blur_cache_t glx_blur_cache;
 #endif
+
+  bool inTransition;
+  int  fromX, fromY;
+  int  targetX, targetY;
+  long time_transStart;
 } win;
 
 /// Temporary structure used for communication between

@@ -1,0 +1,1221 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+.DEFAULT_GOAL	Makefile	/^.DEFAULT_GOAL := compton$/;"	m
+APPDIR	Makefile	/^APPDIR ?= $(PREFIX)\/share\/applications$/;"	m
+BACKEND_STRS	src/compton.c	/^const char * const BACKEND_STRS[NUM_BKEND + 1] = {$/;"	v
+BACKTRACE_SIZE	src/common.h	1275;"	d
+BINDIR	Makefile	/^BINDIR ?= $(PREFIX)\/bin$/;"	m
+BINS	Makefile	/^BINS = compton bin\/compton-trans$/;"	m
+BKEND_GLX	src/common.h	/^  BKEND_GLX,$/;"	e	enum:backend
+BKEND_XRENDER	src/common.h	/^  BKEND_XRENDER,$/;"	e	enum:backend
+BKEND_XR_GLX_HYBRID	src/common.h	/^  BKEND_XR_GLX_HYBRID,$/;"	e	enum:backend
+BUF_LEN	src/common.h	201;"	d
+C2H_SKIP_SPACES	src/c2.c	67;"	d	file:
+C2_B_INIT	src/c2.h	69;"	d
+C2_B_OAND	src/c2.h	/^  C2_B_OAND,$/;"	e	enum:__anon23
+C2_B_OOR	src/c2.h	/^  C2_B_OOR,$/;"	e	enum:__anon23
+C2_B_OUNDEFINED	src/c2.h	/^  C2_B_OUNDEFINED,$/;"	e	enum:__anon23
+C2_B_OXOR	src/c2.h	/^  C2_B_OXOR,$/;"	e	enum:__anon23
+C2_LPTR_INIT	src/c2.h	176;"	d
+C2_L_INIT	src/c2.h	149;"	d
+C2_L_MCONTAINS	src/c2.h	/^    C2_L_MCONTAINS,$/;"	e	enum:_c2_l::__anon25
+C2_L_MEXACT	src/c2.h	/^    C2_L_MEXACT,$/;"	e	enum:_c2_l::__anon25
+C2_L_MPCRE	src/c2.h	/^    C2_L_MPCRE,$/;"	e	enum:_c2_l::__anon25
+C2_L_MSTART	src/c2.h	/^    C2_L_MSTART,$/;"	e	enum:_c2_l::__anon25
+C2_L_MWILDCARD	src/c2.h	/^    C2_L_MWILDCARD,$/;"	e	enum:_c2_l::__anon25
+C2_L_OEQ	src/c2.h	/^    C2_L_OEQ,$/;"	e	enum:_c2_l::__anon24
+C2_L_OEXISTS	src/c2.h	/^    C2_L_OEXISTS,$/;"	e	enum:_c2_l::__anon24
+C2_L_OGT	src/c2.h	/^    C2_L_OGT,$/;"	e	enum:_c2_l::__anon24
+C2_L_OGTEQ	src/c2.h	/^    C2_L_OGTEQ,$/;"	e	enum:_c2_l::__anon24
+C2_L_OLT	src/c2.h	/^    C2_L_OLT,$/;"	e	enum:_c2_l::__anon24
+C2_L_OLTEQ	src/c2.h	/^    C2_L_OLTEQ,$/;"	e	enum:_c2_l::__anon24
+C2_L_PARGB	src/c2.h	/^    C2_L_PARGB,$/;"	e	enum:_c2_l::__anon26
+C2_L_PBDW	src/c2.h	/^    C2_L_PBDW,$/;"	e	enum:_c2_l::__anon26
+C2_L_PBSHAPED	src/c2.h	/^    C2_L_PBSHAPED,$/;"	e	enum:_c2_l::__anon26
+C2_L_PCLASSG	src/c2.h	/^    C2_L_PCLASSG,$/;"	e	enum:_c2_l::__anon26
+C2_L_PCLASSI	src/c2.h	/^    C2_L_PCLASSI,$/;"	e	enum:_c2_l::__anon26
+C2_L_PCLIENT	src/c2.h	/^    C2_L_PCLIENT,$/;"	e	enum:_c2_l::__anon26
+C2_L_PFOCUSED	src/c2.h	/^    C2_L_PFOCUSED,$/;"	e	enum:_c2_l::__anon26
+C2_L_PFULLSCREEN	src/c2.h	/^    C2_L_PFULLSCREEN,$/;"	e	enum:_c2_l::__anon26
+C2_L_PHEIGHT	src/c2.h	/^    C2_L_PHEIGHT,$/;"	e	enum:_c2_l::__anon26
+C2_L_PHEIGHTB	src/c2.h	/^    C2_L_PHEIGHTB,$/;"	e	enum:_c2_l::__anon26
+C2_L_PID	src/c2.h	/^    C2_L_PID,$/;"	e	enum:_c2_l::__anon26
+C2_L_PLEADER	src/c2.h	/^    C2_L_PLEADER,$/;"	e	enum:_c2_l::__anon26
+C2_L_PNAME	src/c2.h	/^    C2_L_PNAME,$/;"	e	enum:_c2_l::__anon26
+C2_L_POVREDIR	src/c2.h	/^    C2_L_POVREDIR,$/;"	e	enum:_c2_l::__anon26
+C2_L_PROLE	src/c2.h	/^    C2_L_PROLE,$/;"	e	enum:_c2_l::__anon26
+C2_L_PROUNDED	src/c2.h	/^    C2_L_PROUNDED,$/;"	e	enum:_c2_l::__anon26
+C2_L_PTINT	src/c2.h	/^    C2_L_PTINT,$/;"	e	enum:_c2_l::__anon27
+C2_L_PTSTRING	src/c2.h	/^    C2_L_PTSTRING,$/;"	e	enum:_c2_l::__anon27
+C2_L_PTUNDEFINED	src/c2.h	/^    C2_L_PTUNDEFINED,$/;"	e	enum:_c2_l::__anon27
+C2_L_PUNDEFINED	src/c2.h	/^    C2_L_PUNDEFINED,$/;"	e	enum:_c2_l::__anon26
+C2_L_PWIDTH	src/c2.h	/^    C2_L_PWIDTH,$/;"	e	enum:_c2_l::__anon26
+C2_L_PWIDTHB	src/c2.h	/^    C2_L_PWIDTHB,$/;"	e	enum:_c2_l::__anon26
+C2_L_PWINDOWTYPE	src/c2.h	/^    C2_L_PWINDOWTYPE,$/;"	e	enum:_c2_l::__anon26
+C2_L_PWMWIN	src/c2.h	/^    C2_L_PWMWIN,$/;"	e	enum:_c2_l::__anon26
+C2_L_PX	src/c2.h	/^    C2_L_PX,$/;"	e	enum:_c2_l::__anon26
+C2_L_PX2	src/c2.h	/^    C2_L_PX2,$/;"	e	enum:_c2_l::__anon26
+C2_L_PY	src/c2.h	/^    C2_L_PY,$/;"	e	enum:_c2_l::__anon26
+C2_L_PY2	src/c2.h	/^    C2_L_PY2,$/;"	e	enum:_c2_l::__anon26
+C2_L_TATOM	src/c2.h	/^    C2_L_TATOM,$/;"	e	enum:_c2_l::c2_l_type
+C2_L_TCARDINAL	src/c2.h	/^    C2_L_TCARDINAL,$/;"	e	enum:_c2_l::c2_l_type
+C2_L_TDRAWABLE	src/c2.h	/^    C2_L_TDRAWABLE,$/;"	e	enum:_c2_l::c2_l_type
+C2_L_TSTRING	src/c2.h	/^    C2_L_TSTRING,$/;"	e	enum:_c2_l::c2_l_type
+C2_L_TUNDEFINED	src/c2.h	/^    C2_L_TUNDEFINED,$/;"	e	enum:_c2_l::c2_l_type
+C2_L_TWINDOW	src/c2.h	/^    C2_L_TWINDOW,$/;"	e	enum:_c2_l::c2_l_type
+C2_MAX_LEVELS	src/c2.h	30;"	d
+C2_PREDEFS	src/c2.h	/^const static c2_predef_t C2_PREDEFS[] = {$/;"	v
+C2_PTR_INIT	src/c2.h	45;"	d
+C2_PTR_NULL	src/c2.h	/^const static c2_ptr_t C2_PTR_NULL = C2_PTR_INIT;$/;"	v
+CASESTRRET	src/common.h	188;"	d
+CASESTRRET2	src/compton.c	3327;"	d	file:
+CASESTRRET2	src/compton.c	3394;"	d	file:
+CC	Makefile	/^  CC = clang$/;"	m
+CC	Makefile	/^CC ?= gcc$/;"	m
+CDBUS_ERROR_BADARG	src/dbus.h	25;"	d
+CDBUS_ERROR_BADARG_S	src/dbus.h	26;"	d
+CDBUS_ERROR_BADMSG	src/dbus.h	22;"	d
+CDBUS_ERROR_BADMSG_S	src/dbus.h	23;"	d
+CDBUS_ERROR_BADTGT	src/dbus.h	29;"	d
+CDBUS_ERROR_BADTGT_S	src/dbus.h	30;"	d
+CDBUS_ERROR_BADWIN	src/dbus.h	27;"	d
+CDBUS_ERROR_BADWIN_S	src/dbus.h	28;"	d
+CDBUS_ERROR_CUSTOM	src/dbus.h	33;"	d
+CDBUS_ERROR_CUSTOM_S	src/dbus.h	34;"	d
+CDBUS_ERROR_FORBIDDEN	src/dbus.h	31;"	d
+CDBUS_ERROR_FORBIDDEN_S	src/dbus.h	32;"	d
+CDBUS_ERROR_PREFIX	src/dbus.h	19;"	d
+CDBUS_ERROR_UNKNOWN	src/dbus.h	20;"	d
+CDBUS_ERROR_UNKNOWN_S	src/dbus.h	21;"	d
+CDBUS_INTERFACE_NAME	src/dbus.h	17;"	d
+CDBUS_OBJECT_NAME	src/dbus.h	18;"	d
+CDBUS_SERVICE_NAME	src/dbus.h	16;"	d
+CDBUS_TYPE_ENUM	src/dbus.h	42;"	d
+CDBUS_TYPE_ENUM_STR	src/dbus.h	43;"	d
+CDBUS_TYPE_WINDOW	src/dbus.h	38;"	d
+CDBUS_TYPE_WINDOW_STR	src/dbus.h	39;"	d
+CFG	Makefile	/^CFG = -std=c99$/;"	m
+CFLAGS	Makefile	/^  CFLAGS ?= -DNDEBUG -O2 -D_FORTIFY_SOURCE=2$/;"	m
+CGBadArg	bin/compton-convgen.py	/^class CGBadArg(CGError):$/;"	c
+CGError	bin/compton-convgen.py	/^class CGError(Exception):$/;"	c
+CGLX_MAX_BUFFER_AGE	src/common.h	229;"	d
+CGLX_SESSION_INIT	src/common.h	802;"	d
+COMPTON_COMMON_H	src/common.h	12;"	d
+COMPTON_VERSION	Makefile	/^COMPTON_VERSION ?= git-$(shell git describe --always --dirty)-$(shell git log -1 --date=short --pretty=format:%cd)$/;"	m
+COMPTON_VERSION	src/common.h	73;"	d
+COMPTON_XRESCHECK_H	src/xrescheck.h	2;"	d
+COMP_BDR	src/compton.c	1642;"	d	file:
+COMP_BDR	src/compton.c	1686;"	d	file:
+CONDF_IGNORECASE	src/common.h	342;"	d
+CONDTGT_CLASSG	src/common.h	/^  CONDTGT_CLASSG,$/;"	e	enum:wincond_target
+CONDTGT_CLASSI	src/common.h	/^  CONDTGT_CLASSI,$/;"	e	enum:wincond_target
+CONDTGT_NAME	src/common.h	/^  CONDTGT_NAME,$/;"	e	enum:wincond_target
+CONDTGT_ROLE	src/common.h	/^  CONDTGT_ROLE,$/;"	e	enum:wincond_target
+CONDTP_ANYWHERE	src/common.h	/^  CONDTP_ANYWHERE,$/;"	e	enum:wincond_type
+CONDTP_EXACT	src/common.h	/^  CONDTP_EXACT,$/;"	e	enum:wincond_type
+CONDTP_FROMSTART	src/common.h	/^  CONDTP_FROMSTART,$/;"	e	enum:wincond_type
+CONDTP_REGEX_PCRE	src/common.h	/^  CONDTP_REGEX_PCRE,$/;"	e	enum:wincond_type
+CONDTP_WILDCARD	src/common.h	/^  CONDTP_WILDCARD,$/;"	e	enum:wincond_type
+CPY_FDS	src/common.h	1815;"	d
+CPY_FDS	src/common.h	1847;"	d
+DEBUG_BACKTRACE	src/common.h	77;"	d
+FADE_DELTA_TOLERANCE	src/common.h	210;"	d
+GLDEBUGPROC	src/common.h	/^typedef void (*GLDEBUGPROC) (GLenum source, GLenum type,$/;"	t
+GLX_BACK_BUFFER_AGE_EXT	src/common.h	146;"	d
+GLX_PROG_MAIN_INIT	src/common.h	500;"	d
+GL_ALREADY_SIGNALED	src/common.h	413;"	d
+GL_CONDITION_SATISFIED	src/common.h	421;"	d
+GL_GLEXT_PROTOTYPES	src/common.h	134;"	d
+GL_SYNC_FLUSH_COMMANDS_BIT	src/common.h	405;"	d
+GL_TEXTURE_RECTANGLE	src/common.h	142;"	d
+GL_TIMEOUT_EXPIRED	src/common.h	417;"	d
+GL_TIMEOUT_IGNORED	src/common.h	409;"	d
+GL_WAIT_FAILED	src/common.h	425;"	d
+GLint64	src/common.h	/^typedef int64_t GLint64;$/;"	t
+GLsync	src/common.h	/^typedef struct __GLsync *GLsync;$/;"	t	typeref:struct:__GLsync
+GLuint64	src/common.h	/^typedef uint64_t GLuint64;$/;"	t
+HASH_ADD_XID	src/xrescheck.c	5;"	d	file:
+HASH_FIND_XID	src/xrescheck.c	8;"	d	file:
+ICODIR	Makefile	/^ICODIR ?= $(PREFIX)\/share\/icons\/hicolor\/$/;"	m
+INCS	Makefile	/^INCS =$/;"	m
+LDFLAGS	Makefile	/^LDFLAGS ?= -Wl,-O1 -Wl,--as-needed$/;"	m
+LD_ALTEXEC	Makefile	/^  export LD_ALTEXEC = \/usr\/bin\/ld.gold$/;"	m
+LIBS	Makefile	/^  LIBS := -lGL $(LIBS)$/;"	m
+LIBS	Makefile	/^LIBS = -lm -lrt$/;"	m
+LPCRE_FREE_STUDY	src/c2.h	23;"	d
+LPCRE_FREE_STUDY	src/c2.h	25;"	d
+MANDIR	Makefile	/^MANDIR ?= $(PREFIX)\/share\/man\/man1$/;"	m
+MANPAGES	Makefile	/^MANPAGES = man\/compton.1 man\/compton-trans.1$/;"	m
+MANPAGES_HTML	Makefile	/^MANPAGES_HTML = $(addsuffix .html,$(MANPAGES))$/;"	m
+MARGIN_INIT	src/common.h	291;"	d
+MAX_BLUR_PASS	src/common.h	232;"	d
+MSTR	src/common.h	154;"	d
+MSTR_	src/common.h	153;"	d
+MS_PER_SEC	src/common.h	219;"	d
+M_CPY_POS_DATA	src/xrescheck.c	11;"	d	file:
+M_POS_DATA	src/xrescheck.h	18;"	d
+M_POS_DATA_PARAMS	src/xrescheck.h	16;"	d
+M_POS_DATA_PASSTHROUGH	src/xrescheck.h	17;"	d
+NS_PER_SEC	src/common.h	217;"	d
+NUM_BKEND	src/common.h	/^  NUM_BKEND,$/;"	e	enum:backend
+NUM_VSYNC	src/common.h	/^  NUM_VSYNC,$/;"	e	enum:__anon10
+NUM_WINTYPES	src/common.h	/^  NUM_WINTYPES$/;"	e	enum:__anon2
+OBJS	Makefile	/^OBJS = compton.o$/;"	m
+OFF	src/common.h	/^  OFF,    \/\/ false$/;"	e	enum:__anon3
+ON	src/common.h	/^  ON,     \/\/ true$/;"	e	enum:__anon3
+OPAQUE	src/common.h	206;"	d
+OPENGL_MAX_DEPTH	src/common.h	226;"	d
+PACKAGES	Makefile	/^PACKAGES = x11 xcomposite xfixes xdamage xrender xext xrandr$/;"	m
+PAINT_INIT	src/common.h	516;"	d
+PCRE_STUDY_JIT_COMPILE	src/c2.h	22;"	d
+PREFIX	Makefile	/^PREFIX ?= \/usr$/;"	m
+P_CASEBOOL	src/compton.c	5829;"	d	file:
+P_CASEBOOL	src/compton.c	6035;"	d	file:
+P_CASELONG	src/compton.c	5830;"	d	file:
+P_CMPATTR_GT	src/opengl.c	715;"	d	file:
+P_CMPATTR_LT	src/opengl.c	714;"	d	file:
+P_GET_UNIFM_LOC	src/opengl.c	501;"	d	file:
+P_GET_UNIFM_LOC	src/opengl.c	514;"	d	file:
+P_GET_UNIFM_LOC	src/opengl.c	552;"	d	file:
+P_GET_UNIFM_LOC	src/opengl.c	561;"	d	file:
+P_PAINTREG_END	src/opengl.c	1126;"	d	file:
+P_PAINTREG_START	src/opengl.c	1098;"	d	file:
+P_TEXCOORD	src/opengl.c	1604;"	d	file:
+PictOpDifference	src/common.h	116;"	d
+REGISTER_PROP	src/common.h	207;"	d
+REG_DATA_INIT	src/common.h	535;"	d
+ROUNDED_PERCENT	src/common.h	203;"	d
+ROUNDED_PIXELS	src/common.h	204;"	d
+SEC_WRAP	src/common.h	215;"	d
+SWAPM_BUFFER_AGE	src/common.h	/^  SWAPM_BUFFER_AGE = -1,$/;"	e	enum:__anon11
+SWAPM_COPY	src/common.h	/^  SWAPM_COPY = 1,$/;"	e	enum:__anon11
+SWAPM_EXCHANGE	src/common.h	/^  SWAPM_EXCHANGE = 2,$/;"	e	enum:__anon11
+SWAPM_UNDEFINED	src/common.h	/^  SWAPM_UNDEFINED = 0,$/;"	e	enum:__anon11
+SWOPTI_TOLERANCE	src/common.h	211;"	d
+TGTFILL	src/c2.c	302;"	d	file:
+TGTFILL	src/c2.c	309;"	d	file:
+TGTFILL	src/c2.c	312;"	d	file:
+TGTFILL	src/c2.c	319;"	d	file:
+TGTFILL	src/c2.c	674;"	d	file:
+TGTFILL	src/c2.c	685;"	d	file:
+TIMEOUT_RUN_TOLERANCE	src/common.h	212;"	d
+TIME_MS_MAX	src/common.h	209;"	d
+T_STRIPSPACE	src/compton.c	5198;"	d	file:
+UNSET	src/common.h	/^  UNSET$/;"	e	enum:__anon3
+US_PER_SEC	src/common.h	218;"	d
+VSYNC_DRM	src/common.h	/^  VSYNC_DRM,$/;"	e	enum:__anon10
+VSYNC_FUNCS_DEINIT	src/compton.c	/^static void (* const (VSYNC_FUNCS_DEINIT[NUM_VSYNC]))(session_t *ps) = {$/;"	v	file:
+VSYNC_FUNCS_INIT	src/compton.c	/^static bool (* const (VSYNC_FUNCS_INIT[NUM_VSYNC]))(session_t *ps) = {$/;"	v	file:
+VSYNC_FUNCS_WAIT	src/compton.c	/^static int (* const (VSYNC_FUNCS_WAIT[NUM_VSYNC]))(session_t *ps) = {$/;"	v	file:
+VSYNC_NONE	src/common.h	/^  VSYNC_NONE,$/;"	e	enum:__anon10
+VSYNC_OPENGL	src/common.h	/^  VSYNC_OPENGL,$/;"	e	enum:__anon10
+VSYNC_OPENGL_MSWC	src/common.h	/^  VSYNC_OPENGL_MSWC,$/;"	e	enum:__anon10
+VSYNC_OPENGL_OML	src/common.h	/^  VSYNC_OPENGL_OML,$/;"	e	enum:__anon10
+VSYNC_OPENGL_SWC	src/common.h	/^  VSYNC_OPENGL_SWC,$/;"	e	enum:__anon10
+VSYNC_STRS	src/compton.c	/^const char * const VSYNC_STRS[NUM_VSYNC + 1] = {$/;"	v
+WARNING	src/compton.c	4467;"	d	file:
+WARNING	src/compton.c	4534;"	d	file:
+WARNING	src/compton.c	4536;"	d	file:
+WARNING	src/compton.c	4609;"	d	file:
+WARNING	src/compton.c	4611;"	d	file:
+WARNING	src/compton.c	4617;"	d	file:
+WARNING	src/compton.c	4619;"	d	file:
+WARNING	src/compton.c	4741;"	d	file:
+WARNING	src/compton.c	4743;"	d	file:
+WARNING	src/compton.c	4752;"	d	file:
+WARNING	src/compton.c	4754;"	d	file:
+WARNING	src/compton.c	4802;"	d	file:
+WARNING	src/compton.c	4804;"	d	file:
+WARNING	src/compton.c	4821;"	d	file:
+WARNING	src/compton.c	4823;"	d	file:
+WARNING	src/compton.c	4840;"	d	file:
+WARNING_DISABLED	src/compton.c	4466;"	d	file:
+WARNING_DISABLED	src/compton.c	4841;"	d	file:
+WFLAG_OPCT_CHANGE	src/common.h	241;"	d
+WFLAG_POS_CHANGE	src/common.h	239;"	d
+WFLAG_SIZE_CHANGE	src/common.h	237;"	d
+WINTYPES	src/compton.c	/^const char * const WINTYPES[NUM_WINTYPES] = {$/;"	v
+WINTYPE_COMBO	src/common.h	/^  WINTYPE_COMBO,$/;"	e	enum:__anon2
+WINTYPE_DESKTOP	src/common.h	/^  WINTYPE_DESKTOP,$/;"	e	enum:__anon2
+WINTYPE_DIALOG	src/common.h	/^  WINTYPE_DIALOG,$/;"	e	enum:__anon2
+WINTYPE_DND	src/common.h	/^  WINTYPE_DND,$/;"	e	enum:__anon2
+WINTYPE_DOCK	src/common.h	/^  WINTYPE_DOCK,$/;"	e	enum:__anon2
+WINTYPE_DROPDOWN_MENU	src/common.h	/^  WINTYPE_DROPDOWN_MENU,$/;"	e	enum:__anon2
+WINTYPE_MENU	src/common.h	/^  WINTYPE_MENU,$/;"	e	enum:__anon2
+WINTYPE_NORMAL	src/common.h	/^  WINTYPE_NORMAL,$/;"	e	enum:__anon2
+WINTYPE_NOTIFY	src/common.h	/^  WINTYPE_NOTIFY,$/;"	e	enum:__anon2
+WINTYPE_POPUP_MENU	src/common.h	/^  WINTYPE_POPUP_MENU,$/;"	e	enum:__anon2
+WINTYPE_SPLASH	src/common.h	/^  WINTYPE_SPLASH,$/;"	e	enum:__anon2
+WINTYPE_TOOLBAR	src/common.h	/^  WINTYPE_TOOLBAR,$/;"	e	enum:__anon2
+WINTYPE_TOOLTIP	src/common.h	/^  WINTYPE_TOOLTIP,$/;"	e	enum:__anon2
+WINTYPE_UNKNOWN	src/common.h	/^  WINTYPE_UNKNOWN,$/;"	e	enum:__anon2
+WINTYPE_UTILITY	src/common.h	/^  WINTYPE_UTILITY,$/;"	e	enum:__anon2
+WIN_EVMODE_CLIENT	src/common.h	/^  WIN_EVMODE_CLIENT$/;"	e	enum:__anon20
+WIN_EVMODE_FRAME	src/common.h	/^  WIN_EVMODE_FRAME,$/;"	e	enum:__anon20
+WIN_EVMODE_UNKNOWN	src/common.h	/^  WIN_EVMODE_UNKNOWN,$/;"	e	enum:__anon20
+WIN_GET_LEADER_MAX_RECURSION	src/common.h	213;"	d
+WMODE_ARGB	src/common.h	/^  WMODE_ARGB$/;"	e	enum:__anon6
+WMODE_SOLID	src/common.h	/^  WMODE_SOLID,$/;"	e	enum:__anon6
+WMODE_TRANS	src/common.h	/^  WMODE_TRANS,$/;"	e	enum:__anon6
+XCompositeNameWindowPixmap	src/xrescheck.h	59;"	d
+XCompositeNameWindowPixmap_	src/xrescheck.h	/^XCompositeNameWindowPixmap_(Display *dpy, Window window, M_POS_DATA_PARAMS) {$/;"	f
+XCreatePixmap	src/xrescheck.h	48;"	d
+XCreatePixmap_	src/xrescheck.h	/^XCreatePixmap_(Display *dpy, Drawable drawable,$/;"	f
+XFixesCreateRegion	src/common.h	1325;"	d
+XFixesCreateRegion_	src/common.h	/^XFixesCreateRegion_(Display *dpy, XRectangle *p, int n,$/;"	f
+XFixesDestroyRegion	src/common.h	1326;"	d
+XFixesDestroyRegion_	src/common.h	/^XFixesDestroyRegion_(Display *dpy, XserverRegion reg,$/;"	f
+XFreePixmap	src/xrescheck.h	68;"	d
+XFreePixmap_	src/xrescheck.h	/^XFreePixmap_(Display *dpy, Pixmap pixmap, M_POS_DATA_PARAMS) {$/;"	f
+XRFILTER_BINOMIAL	src/common.h	223;"	d
+XRFILTER_CONVOLUTION	src/common.h	221;"	d
+XRFILTER_GAUSSIAN	src/common.h	222;"	d
+_GNU_SOURCE	src/common.h	83;"	d
+__init__	bin/compton-convgen.py	/^    def __init__(self, desc):$/;"	m	class:CGError
+_args_readfactors	bin/compton-convgen.py	/^def _args_readfactors(lst):$/;"	f
+_c2_b	src/c2.h	/^struct _c2_b {$/;"	s
+_c2_l	src/c2.h	/^struct _c2_l {$/;"	s
+_c2_lptr	src/c2.h	/^struct _c2_lptr {$/;"	s
+_gen_invalid	bin/compton-convgen.py	/^def _gen_invalid(width, height, factors):$/;"	f
+_glx_texture	src/common.h	/^struct _glx_texture {$/;"	s
+_ignore	src/common.h	/^typedef struct _ignore {$/;"	s
+_latom	src/common.h	/^typedef struct _latom {$/;"	s
+_main	bin/compton-convgen.py	/^def _main():$/;"	f
+_options_t	src/common.h	/^typedef struct _options_t {$/;"	s
+_parse_args	bin/compton-convgen.py	/^def _parse_args():$/;"	f
+_session_t	src/common.h	/^typedef struct _session_t {$/;"	s
+_timeout_t	src/common.h	/^typedef struct _timeout_t {$/;"	s
+_win	src/common.h	/^typedef struct _win {$/;"	s
+a	src/common.h	/^  XWindowAttributes a;$/;"	m	struct:_win
+active_leader	src/common.h	/^  Window active_leader;$/;"	m	struct:_session_t
+active_opacity	src/common.h	/^  opacity_t active_opacity;$/;"	m	struct:_options_t
+active_win	src/common.h	/^  struct _win *active_win;$/;"	m	struct:_session_t	typeref:struct:_session_t::_win
+add_damage	src/compton.c	/^add_damage(session_t *ps, XserverRegion damage) {$/;"	f	file:
+add_damage_win	src/compton.h	/^add_damage_win(session_t *ps, win *w) {$/;"	f
+add_win	src/compton.c	/^add_win(session_t *ps, Window id, Window prev) {$/;"	f	file:
+all_damage	src/common.h	/^  XserverRegion all_damage;$/;"	m	struct:_session_t
+all_damage_last	src/common.h	/^  XserverRegion all_damage_last[CGLX_MAX_BUFFER_AGE];$/;"	m	struct:_session_t
+allocchk	src/common.h	1346;"	d
+allocchk_	src/common.h	/^allocchk_(const char *func_name, void *ptr) {$/;"	f
+alpha_picts	src/common.h	/^  Picture *alpha_picts;$/;"	m	struct:_session_t
+alpha_step	src/common.h	/^  double alpha_step;$/;"	m	struct:_options_t
+argparse	bin/compton-convgen.py	/^import argparse$/;"	i
+array_wid_exists	src/compton.h	/^array_wid_exists(const Window *arr, int count, Window wid) {$/;"	f
+atom	src/common.h	/^  Atom atom;$/;"	m	struct:_latom
+atom_class	src/common.h	/^  Atom atom_class;$/;"	m	struct:_session_t
+atom_client	src/common.h	/^  Atom atom_client;$/;"	m	struct:_session_t
+atom_client_leader	src/common.h	/^  Atom atom_client_leader;$/;"	m	struct:_session_t
+atom_compton_shadow	src/common.h	/^  Atom atom_compton_shadow;$/;"	m	struct:_session_t
+atom_ewmh_active_win	src/common.h	/^  Atom atom_ewmh_active_win;$/;"	m	struct:_session_t
+atom_frame_extents	src/common.h	/^  Atom atom_frame_extents;$/;"	m	struct:_session_t
+atom_name	src/common.h	/^  Atom atom_name;$/;"	m	struct:_session_t
+atom_name_ewmh	src/common.h	/^  Atom atom_name_ewmh;$/;"	m	struct:_session_t
+atom_opacity	src/common.h	/^  Atom atom_opacity;$/;"	m	struct:_session_t
+atom_role	src/common.h	/^  Atom atom_role;$/;"	m	struct:_session_t
+atom_transient	src/common.h	/^  Atom atom_transient;$/;"	m	struct:_session_t
+atom_win_type	src/common.h	/^  Atom atom_win_type;$/;"	m	struct:_session_t
+atoms_wintypes	src/common.h	/^  Atom atoms_wintypes[NUM_WINTYPES];$/;"	m	struct:_session_t
+b	src/c2.h	/^    c2_b_t *b;$/;"	m	union:__anon21::__anon22
+backend	src/common.h	/^  enum backend backend;$/;"	m	struct:_options_t	typeref:enum:_options_t::backend
+backend	src/common.h	/^enum backend {$/;"	g
+background_props_str	src/compton.c	/^const static char *background_props_str[] = {$/;"	v	file:
+benchmark	src/common.h	/^  int benchmark;$/;"	m	struct:_options_t
+benchmark_wid	src/common.h	/^  Window benchmark_wid;$/;"	m	struct:_options_t
+bkend_use_glx	src/common.h	/^bkend_use_glx(session_t *ps) {$/;"	f
+bkend_use_xrender	src/common.h	/^bkend_use_xrender(session_t *ps) {$/;"	f
+black_picture	src/common.h	/^  Picture black_picture;$/;"	m	struct:_session_t
+blur_background	src/common.h	/^  bool blur_background;$/;"	m	struct:_options_t
+blur_background	src/common.h	/^  bool blur_background;$/;"	m	struct:_win
+blur_background_blacklist	src/common.h	/^  c2_lptr_t *blur_background_blacklist;$/;"	m	struct:_options_t
+blur_background_fixed	src/common.h	/^  bool blur_background_fixed;$/;"	m	struct:_options_t
+blur_background_frame	src/common.h	/^  bool blur_background_frame;$/;"	m	struct:_options_t
+blur_background_last	src/common.h	/^  bool blur_background_last;$/;"	m	struct:_win
+blur_kerns	src/common.h	/^  XFixed *blur_kerns[MAX_BLUR_PASS];$/;"	m	struct:_options_t
+blur_kerns_cache	src/common.h	/^  XFixed *blur_kerns_cache[MAX_BLUR_PASS];$/;"	m	struct:_session_t
+blur_passes	src/common.h	/^  glx_blur_pass_t blur_passes[MAX_BLUR_PASS];$/;"	m	struct:__anon19
+border_size	src/common.h	/^  XserverRegion border_size;$/;"	m	struct:_win
+border_size	src/compton.c	/^border_size(session_t *ps, win *w, bool use_offset) {$/;"	f	file:
+bottom	src/common.h	/^  int bottom;$/;"	m	struct:__anon5
+bounding_shaped	src/common.h	/^  bool bounding_shaped;$/;"	m	struct:_win
+c2_b_op_t	src/c2.h	/^} c2_b_op_t;$/;"	t	typeref:enum:__anon23
+c2_b_t	src/c2.h	/^typedef struct _c2_b c2_b_t;$/;"	t	typeref:struct:_c2_b
+c2_dump	src/c2.h	/^c2_dump(c2_ptr_t p) {$/;"	f
+c2_dump_raw	src/c2.c	/^c2_dump_raw(c2_ptr_t p) {$/;"	f	file:
+c2_error	src/c2.c	252;"	d	file:
+c2_error	src/c2.c	253;"	d	file:
+c2_error	src/c2.c	60;"	d	file:
+c2_error	src/c2.c	61;"	d	file:
+c2_error	src/c2.c	719;"	d	file:
+c2_error	src/c2.c	720;"	d	file:
+c2_error	src/c2.c	86;"	d	file:
+c2_error	src/c2.c	87;"	d	file:
+c2_free	src/c2.c	/^c2_free(c2_ptr_t p) {$/;"	f	file:
+c2_free_lptr	src/c2.c	/^c2_free_lptr(c2_lptr_t *lp) {$/;"	f
+c2_freep	src/c2.h	/^c2_freep(c2_ptr_t *pp) {$/;"	f
+c2_get_atom_type	src/c2.c	/^c2_get_atom_type(const c2_l_t *pleaf) {$/;"	f	file:
+c2_l_postprocess	src/c2.c	/^c2_l_postprocess(session_t *ps, c2_l_t *pleaf) {$/;"	f	file:
+c2_l_t	src/c2.h	/^typedef struct _c2_l c2_l_t;$/;"	t	typeref:struct:_c2_l
+c2_l_type	src/c2.h	/^  enum c2_l_type {$/;"	g	struct:_c2_l
+c2_lptr_t	src/common.h	/^typedef struct _c2_lptr c2_lptr_t;$/;"	t	typeref:struct:_c2_lptr
+c2_match	src/common.h	2503;"	d
+c2_match_once	src/c2.c	/^c2_match_once(session_t *ps, win *w, const c2_ptr_t cond) {$/;"	f	file:
+c2_match_once_leaf	src/c2.c	/^c2_match_once_leaf(session_t *ps, win *w, const c2_l_t *pleaf,$/;"	f	file:
+c2_matchd	src/c2.c	/^c2_matchd(session_t *ps, win *w, const c2_lptr_t *condlst,$/;"	f
+c2_parse	src/common.h	2494;"	d
+c2_parse_grp	src/c2.c	/^c2_parse_grp(session_t *ps, const char *pattern, int offset, c2_ptr_t *presult, int level) {$/;"	f	file:
+c2_parse_legacy	src/c2.c	/^c2_parse_legacy(session_t *ps, const char *pattern, int offset, c2_ptr_t *presult) {$/;"	f	file:
+c2_parse_op	src/c2.c	/^c2_parse_op(const char *pattern, int offset, c2_ptr_t *presult) {$/;"	f	file:
+c2_parse_pattern	src/c2.c	/^c2_parse_pattern(session_t *ps, const char *pattern, int offset, c2_ptr_t *presult) {$/;"	f	file:
+c2_parse_target	src/c2.c	/^c2_parse_target(session_t *ps, const char *pattern, int offset, c2_ptr_t *presult) {$/;"	f	file:
+c2_parsed	src/c2.c	/^c2_parsed(session_t *ps, c2_lptr_t **pcondlst, const char *pattern,$/;"	f
+c2_predef_t	src/c2.h	/^} c2_predef_t;$/;"	t	typeref:struct:__anon28
+c2_ptr_isempty	src/c2.h	/^c2_ptr_isempty(const c2_ptr_t p) {$/;"	f
+c2_ptr_reset	src/c2.h	/^c2_ptr_reset(c2_ptr_t *pp) {$/;"	f
+c2_ptr_t	src/c2.h	/^} c2_ptr_t;$/;"	t	typeref:struct:__anon21
+c2h_b_opcmp	src/c2.h	/^c2h_b_opcmp(c2_b_op_t op1, c2_b_op_t op2) {$/;"	f
+c2h_b_opp	src/c2.h	/^c2h_b_opp(c2_b_op_t op) {$/;"	f
+c2h_comb_tree	src/c2.h	/^c2h_comb_tree(c2_b_op_t op, c2_ptr_t p1, c2_ptr_t p2) {$/;"	f
+c2h_dump_str_tgt	src/c2.c	/^c2h_dump_str_tgt(const c2_l_t *pleaf) {$/;"	f	file:
+c2h_dump_str_type	src/c2.c	/^c2h_dump_str_type(const c2_l_t *pleaf) {$/;"	f	file:
+cache_bbblst	src/common.h	/^  const c2_lptr_t *cache_bbblst;$/;"	m	struct:_win
+cache_fblst	src/common.h	/^  const c2_lptr_t *cache_fblst;$/;"	m	struct:_win
+cache_fcblst	src/common.h	/^  const c2_lptr_t *cache_fcblst;$/;"	m	struct:_win
+cache_ivclst	src/common.h	/^  const c2_lptr_t *cache_ivclst;$/;"	m	struct:_win
+cache_leader	src/common.h	/^  Window cache_leader;$/;"	m	struct:_win
+cache_oparule	src/common.h	/^  const c2_lptr_t *cache_oparule;$/;"	m	struct:_win
+cache_pblst	src/common.h	/^  const c2_lptr_t *cache_pblst;$/;"	m	struct:_win
+cache_sblst	src/common.h	/^  const c2_lptr_t *cache_sblst;$/;"	m	struct:_win
+cache_uipblst	src/common.h	/^  const c2_lptr_t *cache_uipblst;$/;"	m	struct:_win
+calc_dim	src/compton.c	/^calc_dim(session_t *ps, win *w) {$/;"	f	file:
+calc_opacity	src/compton.c	/^calc_opacity(session_t *ps, win *w) {$/;"	f	file:
+calc_shadow_geometry	src/compton.c	/^calc_shadow_geometry(session_t *ps, win *w) {$/;"	f	file:
+calc_win_size	src/compton.c	/^calc_win_size(session_t *ps, win *w) {$/;"	f	file:
+callback	src/common.h	/^  bool (*callback)(session_t *ps, struct _timeout_t *ptmout);$/;"	m	struct:_timeout_t
+ccalloc	src/common.h	1352;"	d
+cdbus_apdarg_bool	src/dbus.c	/^cdbus_apdarg_bool(session_t *ps, DBusMessage *msg, const void *data) {$/;"	f	file:
+cdbus_apdarg_double	src/dbus.c	/^cdbus_apdarg_double(session_t *ps, DBusMessage *msg, const void *data) {$/;"	f	file:
+cdbus_apdarg_enum	src/dbus.c	/^cdbus_apdarg_enum(session_t *ps, DBusMessage *msg, const void *data) {$/;"	f	file:
+cdbus_apdarg_int32	src/dbus.c	/^cdbus_apdarg_int32(session_t *ps, DBusMessage *msg, const void *data) {$/;"	f	file:
+cdbus_apdarg_string	src/dbus.c	/^cdbus_apdarg_string(session_t *ps, DBusMessage *msg, const void *data) {$/;"	f	file:
+cdbus_apdarg_uint32	src/dbus.c	/^cdbus_apdarg_uint32(session_t *ps, DBusMessage *msg, const void *data) {$/;"	f	file:
+cdbus_apdarg_wid	src/dbus.c	/^cdbus_apdarg_wid(session_t *ps, DBusMessage *msg, const void *data) {$/;"	f	file:
+cdbus_apdarg_wids	src/dbus.c	/^cdbus_apdarg_wids(session_t *ps, DBusMessage *msg, const void *data) {$/;"	f	file:
+cdbus_callback_add_timeout	src/dbus.c	/^cdbus_callback_add_timeout(DBusTimeout *timeout, void *data) {$/;"	f	file:
+cdbus_callback_add_watch	src/dbus.c	/^cdbus_callback_add_watch(DBusWatch *watch, void *data) {$/;"	f	file:
+cdbus_callback_handle_timeout	src/dbus.c	/^cdbus_callback_handle_timeout(session_t *ps, timeout_t *ptmout) {$/;"	f	file:
+cdbus_callback_remove_timeout	src/dbus.c	/^cdbus_callback_remove_timeout(DBusTimeout *timeout, void *data) {$/;"	f	file:
+cdbus_callback_remove_watch	src/dbus.c	/^cdbus_callback_remove_watch(DBusWatch *watch, void *data) {$/;"	f	file:
+cdbus_callback_timeout_toggled	src/dbus.c	/^cdbus_callback_timeout_toggled(DBusTimeout *timeout, void *data) {$/;"	f	file:
+cdbus_callback_watch_toggled	src/dbus.c	/^cdbus_callback_watch_toggled(DBusWatch *watch, void *data) {$/;"	f	file:
+cdbus_destroy	src/dbus.c	/^cdbus_destroy(session_t *ps) {$/;"	f
+cdbus_enum_t	src/dbus.h	/^typedef uint16_t cdbus_enum_t;$/;"	t
+cdbus_ev_win_added	src/dbus.c	/^cdbus_ev_win_added(session_t *ps, win *w) {$/;"	f
+cdbus_ev_win_destroyed	src/dbus.c	/^cdbus_ev_win_destroyed(session_t *ps, win *w) {$/;"	f
+cdbus_ev_win_focusin	src/dbus.c	/^cdbus_ev_win_focusin(session_t *ps, win *w) {$/;"	f
+cdbus_ev_win_focusout	src/dbus.c	/^cdbus_ev_win_focusout(session_t *ps, win *w) {$/;"	f
+cdbus_ev_win_mapped	src/dbus.c	/^cdbus_ev_win_mapped(session_t *ps, win *w) {$/;"	f
+cdbus_ev_win_unmapped	src/dbus.c	/^cdbus_ev_win_unmapped(session_t *ps, win *w) {$/;"	f
+cdbus_get_watch_cond	src/dbus.h	/^cdbus_get_watch_cond(DBusWatch *watch) {$/;"	f
+cdbus_init	src/dbus.c	/^cdbus_init(session_t *ps) {$/;"	f
+cdbus_loop	src/dbus.c	/^cdbus_loop(session_t *ps) {$/;"	f
+cdbus_m_ismethod	src/dbus.c	556;"	d	file:
+cdbus_m_ismethod	src/dbus.c	589;"	d	file:
+cdbus_m_opts_get_do	src/dbus.c	884;"	d	file:
+cdbus_m_opts_get_do	src/dbus.c	980;"	d	file:
+cdbus_m_opts_set_do	src/dbus.c	1111;"	d	file:
+cdbus_m_opts_set_do	src/dbus.c	998;"	d	file:
+cdbus_m_win_get_do	src/dbus.c	678;"	d	file:
+cdbus_m_win_get_do	src/dbus.c	747;"	d	file:
+cdbus_m_win_set_do	src/dbus.c	782;"	d	file:
+cdbus_m_win_set_do	src/dbus.c	822;"	d	file:
+cdbus_msg_get_arg	src/dbus.c	/^cdbus_msg_get_arg(DBusMessage *msg, int count, const int type, void *pdest) {$/;"	f	file:
+cdbus_process	src/dbus.c	/^cdbus_process(session_t *ps, DBusMessage *msg) {$/;"	f	file:
+cdbus_process_find_win	src/dbus.c	/^cdbus_process_find_win(session_t *ps, DBusMessage *msg) {$/;"	f	file:
+cdbus_process_introspect	src/dbus.c	/^cdbus_process_introspect(session_t *ps, DBusMessage *msg) {$/;"	f	file:
+cdbus_process_list_win	src/dbus.c	/^cdbus_process_list_win(session_t *ps, DBusMessage *msg) {$/;"	f	file:
+cdbus_process_opts_get	src/dbus.c	/^cdbus_process_opts_get(session_t *ps, DBusMessage *msg) {$/;"	f	file:
+cdbus_process_opts_set	src/dbus.c	/^cdbus_process_opts_set(session_t *ps, DBusMessage *msg) {$/;"	f	file:
+cdbus_process_win_get	src/dbus.c	/^cdbus_process_win_get(session_t *ps, DBusMessage *msg) {$/;"	f	file:
+cdbus_process_win_set	src/dbus.c	/^cdbus_process_win_set(session_t *ps, DBusMessage *msg) {$/;"	f	file:
+cdbus_reply	src/dbus.c	/^cdbus_reply(session_t *ps, DBusMessage *srcmsg,$/;"	f	file:
+cdbus_reply_bool	src/dbus.h	/^cdbus_reply_bool(session_t *ps, DBusMessage *srcmsg, bool bval) {$/;"	f
+cdbus_reply_double	src/dbus.h	/^cdbus_reply_double(session_t *ps, DBusMessage *srcmsg, double val) {$/;"	f
+cdbus_reply_enum	src/dbus.h	/^cdbus_reply_enum(session_t *ps, DBusMessage *srcmsg, cdbus_enum_t eval) {$/;"	f
+cdbus_reply_err	src/dbus.h	144;"	d
+cdbus_reply_errm	src/dbus.c	/^cdbus_reply_errm(session_t *ps, DBusMessage *msg) {$/;"	f	file:
+cdbus_reply_int32	src/dbus.h	/^cdbus_reply_int32(session_t *ps, DBusMessage *srcmsg, int32_t val) {$/;"	f
+cdbus_reply_noarg	src/dbus.h	/^cdbus_reply_noarg(session_t *ps, DBusMessage *srcmsg) {$/;"	f
+cdbus_reply_string	src/dbus.h	/^cdbus_reply_string(session_t *ps, DBusMessage *srcmsg, const char *str) {$/;"	f
+cdbus_reply_uint32	src/dbus.h	/^cdbus_reply_uint32(session_t *ps, DBusMessage *srcmsg, uint32_t val) {$/;"	f
+cdbus_reply_wid	src/dbus.h	/^cdbus_reply_wid(session_t *ps, DBusMessage *srcmsg, Window wid) {$/;"	f
+cdbus_repr_msgtype	src/dbus.h	/^cdbus_repr_msgtype(DBusMessage *msg) {$/;"	f
+cdbus_signal	src/dbus.c	/^cdbus_signal(session_t *ps, const char *name,$/;"	f	file:
+cdbus_signal_noarg	src/dbus.h	/^cdbus_signal_noarg(session_t *ps, const char *name) {$/;"	f
+cdbus_signal_wid	src/dbus.h	/^cdbus_signal_wid(session_t *ps, const char *name, Window wid) {$/;"	f
+cdbus_window_t	src/dbus.h	/^typedef uint32_t cdbus_window_t;$/;"	t
+cfg	src/common.h	/^  GLXFBConfig cfg;$/;"	m	struct:__anon12
+cgsize	src/common.h	/^  int cgsize;$/;"	m	struct:_session_t
+check_fade_fin	src/compton.h	/^check_fade_fin(session_t *ps, win *w) {$/;"	f
+circulate_win	src/compton.c	/^circulate_win(session_t *ps, XCirculateEvent *ce) {$/;"	f	file:
+class_general	src/common.h	/^  char *class_general;$/;"	m	struct:_win
+class_instance	src/common.h	/^  char *class_instance;$/;"	m	struct:_win
+clear_cache_win_leaders	src/compton.h	/^clear_cache_win_leaders(session_t *ps) {$/;"	f
+clear_shadow	src/common.h	/^  bool clear_shadow;$/;"	m	struct:_options_t
+client_win	src/common.h	/^  Window client_win;$/;"	m	struct:_win
+cmake_build	tests/cmake-test.sh	/^cmake_build() {$/;"	f
+cmake_prepare	tests/cmake-test.sh	/^cmake_prepare() {$/;"	f
+cmalloc	src/common.h	1349;"	d
+cmemzero	src/common.h	1358;"	d
+cmemzero_one	src/common.h	1362;"	d
+composite_error	src/common.h	/^  int composite_error;$/;"	m	struct:_session_t
+composite_event	src/common.h	/^  int composite_event;$/;"	m	struct:_session_t
+composite_opcode	src/common.h	/^  int composite_opcode;$/;"	m	struct:_session_t
+condlst_add	src/compton.c	/^condlst_add(session_t *ps, c2_lptr_t **pcondlst, const char *pattern) {$/;"	f	file:
+config_file	src/common.h	/^  char *config_file;$/;"	m	struct:_options_t
+configure_win	src/compton.c	/^configure_win(session_t *ps, XConfigureEvent *ce) {$/;"	f	file:
+context	src/common.h	/^  GLXContext context;$/;"	m	struct:__anon19
+conv	src/common.h	/^} conv;$/;"	t	typeref:struct:__anon17
+copy_region	src/common.h	/^copy_region(const session_t *ps, XserverRegion oldregion) {$/;"	f
+crealloc	src/common.h	1355;"	d
+cshadow_picture	src/common.h	/^  Picture cshadow_picture;$/;"	m	struct:_session_t
+cxfree	src/common.h	/^cxfree(void *data) {$/;"	f
+cxinerama_upd_scrs	src/compton.c	/^cxinerama_upd_scrs(session_t *ps) {$/;"	f	file:
+cxinerama_win_upd_scr	src/compton.h	/^cxinerama_win_upd_scr(session_t *ps, win *w) {$/;"	f
+damage	src/common.h	/^  Damage damage;$/;"	m	struct:_win
+damage_error	src/common.h	/^  int damage_error;$/;"	m	struct:_session_t
+damage_event	src/common.h	/^  int damage_event;$/;"	m	struct:_session_t
+damage_win	src/compton.c	/^damage_win(session_t *ps, XDamageNotifyEvent *de) {$/;"	f	file:
+damaged	src/common.h	/^  bool damaged;$/;"	m	struct:_win
+data	src/c2.h	/^  void *data;$/;"	m	struct:_c2_lptr
+data	src/common.h	/^  double *data;$/;"	m	struct:__anon17
+data	src/common.h	/^  void *data;$/;"	m	struct:_timeout_t
+data	src/common.h	/^  } data;$/;"	m	struct:__anon8	typeref:union:__anon8::__anon9
+dbe	src/common.h	/^  bool dbe;$/;"	m	struct:_options_t
+dbe_exists	src/common.h	/^  bool dbe_exists;$/;"	m	struct:_session_t
+dbus	src/common.h	/^  bool dbus;$/;"	m	struct:_options_t
+dbus_conn	src/common.h	/^  DBusConnection *dbus_conn;$/;"	m	struct:_session_t
+dbus_service	src/common.h	/^  char *dbus_service;$/;"	m	struct:_session_t
+depth	src/common.h	/^  int depth;$/;"	m	struct:_session_t
+depth	src/common.h	/^  unsigned depth;$/;"	m	struct:_glx_texture
+destroy_callback	src/compton.c	/^destroy_callback(session_t *ps, win *w) {$/;"	f	file:
+destroy_win	src/compton.c	/^destroy_win(session_t *ps, Window id) {$/;"	f	file:
+destroyed	src/common.h	/^  bool destroyed;$/;"	m	struct:_win
+detect_client_leader	src/common.h	/^  bool detect_client_leader;$/;"	m	struct:_options_t
+detect_client_opacity	src/common.h	/^  bool detect_client_opacity;$/;"	m	struct:_options_t
+detect_rounded_corners	src/common.h	/^  bool detect_rounded_corners;$/;"	m	struct:_options_t
+detect_transient	src/common.h	/^  bool detect_transient;$/;"	m	struct:_options_t
+determine_evmask	src/compton.c	/^determine_evmask(session_t *ps, Window wid, win_evmode_t mode) {$/;"	f	file:
+die	functions.sh	/^die() {$/;"	f
+dim	src/common.h	/^  bool dim;$/;"	m	struct:_win
+discard_ignore	src/compton.c	/^discard_ignore(session_t *ps, unsigned long sequence) {$/;"	f	file:
+display	src/common.h	/^  char *display;$/;"	m	struct:_options_t
+display_repr	src/common.h	/^  char *display_repr;$/;"	m	struct:_options_t
+dpy	src/common.h	/^  Display *dpy;$/;"	m	struct:_session_t
+drm_fd	src/common.h	/^  int drm_fd;$/;"	m	struct:_session_t
+dump_drawable	src/compton.h	/^dump_drawable(session_t *ps, Drawable drawable) {$/;"	f
+dump_region	src/compton.h	/^dump_region(const session_t *ps, XserverRegion region) {$/;"	f
+eerror	functions.sh	/^eerror() {$/;"	f
+einfo	functions.sh	/^einfo() {$/;"	f
+enabled	src/common.h	/^  bool enabled;$/;"	m	struct:_timeout_t
+ensure_glx_context	src/compton.h	/^ensure_glx_context(session_t *ps) {$/;"	f
+ev_circulate_notify	src/compton.c	/^ev_circulate_notify(session_t *ps, XCirculateEvent *ev) {$/;"	f	file:
+ev_configure_notify	src/compton.c	/^ev_configure_notify(session_t *ps, XConfigureEvent *ev) {$/;"	f	file:
+ev_create_notify	src/compton.c	/^ev_create_notify(session_t *ps, XCreateWindowEvent *ev) {$/;"	f	file:
+ev_damage_notify	src/compton.c	/^ev_damage_notify(session_t *ps, XDamageNotifyEvent *ev) {$/;"	f	file:
+ev_destroy_notify	src/compton.c	/^ev_destroy_notify(session_t *ps, XDestroyWindowEvent *ev) {$/;"	f	file:
+ev_expose	src/compton.c	/^ev_expose(session_t *ps, XExposeEvent *ev) {$/;"	f	file:
+ev_focus_detail_name	src/compton.c	/^ev_focus_detail_name(XFocusChangeEvent* ev) {$/;"	f	file:
+ev_focus_in	src/compton.c	/^ev_focus_in(session_t *ps, XFocusChangeEvent *ev) {$/;"	f	file:
+ev_focus_mode_name	src/compton.c	/^ev_focus_mode_name(XFocusChangeEvent* ev) {$/;"	f	file:
+ev_focus_out	src/compton.c	/^ev_focus_out(session_t *ps, XFocusChangeEvent *ev) {$/;"	f	file:
+ev_focus_report	src/compton.c	/^ev_focus_report(XFocusChangeEvent* ev) {$/;"	f	file:
+ev_handle	src/compton.c	/^ev_handle(session_t *ps, XEvent *ev) {$/;"	f	file:
+ev_map_notify	src/compton.c	/^ev_map_notify(session_t *ps, XMapEvent *ev) {$/;"	f	file:
+ev_name	src/compton.c	/^ev_name(session_t *ps, XEvent *ev) {$/;"	f	file:
+ev_property_notify	src/compton.c	/^ev_property_notify(session_t *ps, XPropertyEvent *ev) {$/;"	f	file:
+ev_received	src/common.h	/^  bool ev_received;$/;"	m	struct:_session_t
+ev_reparent_notify	src/compton.c	/^ev_reparent_notify(session_t *ps, XReparentEvent *ev) {$/;"	f	file:
+ev_screen_change_notify	src/compton.c	/^ev_screen_change_notify(session_t *ps,$/;"	f	file:
+ev_serial	src/compton.c	/^ev_serial(XEvent *ev) {$/;"	f	file:
+ev_shape_notify	src/compton.c	/^ev_shape_notify(session_t *ps, XShapeEvent *ev) {$/;"	f	file:
+ev_unmap_notify	src/compton.c	/^ev_unmap_notify(session_t *ps, XUnmapEvent *ev) {$/;"	f	file:
+ev_window	src/compton.c	/^ev_window(session_t *ps, XEvent *ev) {$/;"	f	file:
+ev_window_name	src/compton.c	/^ev_window_name(session_t *ps, Window wid, char **name) {$/;"	f	file:
+expose_rects	src/common.h	/^  XRectangle *expose_rects;$/;"	m	struct:_session_t
+expose_root	src/compton.c	/^expose_root(session_t *ps, XRectangle *rects, int nrects) {$/;"	f	file:
+extents	src/common.h	/^  XserverRegion extents;$/;"	m	struct:_win
+f_BindTexImageEXT	src/common.h	/^typedef void (*f_BindTexImageEXT) (Display *display, GLXDrawable drawable, int buffer, const int *attrib_list);$/;"	t
+f_ClientWaitSync	src/common.h	/^typedef GLenum (*f_ClientWaitSync) (GLsync sync, GLbitfield flags,$/;"	t
+f_CopySubBuffer	src/common.h	/^typedef void (*f_CopySubBuffer) (Display *dpy, GLXDrawable drawable, int x, int y, int width, int height);$/;"	t
+f_DebugMessageCallback	src/common.h	/^typedef void (*f_DebugMessageCallback) (GLDEBUGPROC, void *userParam);$/;"	t
+f_DeleteSync	src/common.h	/^typedef void (*f_DeleteSync) (GLsync sync);$/;"	t
+f_FenceSync	src/common.h	/^typedef GLsync (*f_FenceSync) (GLenum condition, GLbitfield flags);$/;"	t
+f_FrameTerminatorGREMEDY	src/common.h	/^typedef void (*f_FrameTerminatorGREMEDY) (void);$/;"	t
+f_GetSyncValuesOML	src/common.h	/^typedef Bool (*f_GetSyncValuesOML) (Display* dpy, GLXDrawable drawable, int64_t* ust, int64_t* msc, int64_t* sbc);$/;"	t
+f_GetVideoSync	src/common.h	/^typedef int (*f_GetVideoSync) (unsigned *);$/;"	t
+f_ImportSyncEXT	src/common.h	/^typedef GLsync (*f_ImportSyncEXT) (GLenum external_sync_type,$/;"	t
+f_IsSync	src/common.h	/^typedef GLboolean (*f_IsSync) (GLsync sync);$/;"	t
+f_ReleaseTexImageEXT	src/common.h	/^typedef void (*f_ReleaseTexImageEXT) (Display *display, GLXDrawable drawable, int buffer);$/;"	t
+f_StringMarkerGREMEDY	src/common.h	/^typedef void (*f_StringMarkerGREMEDY) (GLsizei len, const void *string);$/;"	t
+f_SwapIntervalMESA	src/common.h	/^typedef int (*f_SwapIntervalMESA) (unsigned int interval);$/;"	t
+f_SwapIntervalSGI	src/common.h	/^typedef int (*f_SwapIntervalSGI) (int interval);$/;"	t
+f_WaitForMscOML	src/common.h	/^typedef Bool (*f_WaitForMscOML) (Display* dpy, GLXDrawable drawable, int64_t target_msc, int64_t divisor, int64_t remainder, int64_t* ust, int64_t* msc, int64_t* sbc);$/;"	t
+f_WaitSync	src/common.h	/^typedef void (*f_WaitSync) (GLsync sync, GLbitfield flags,$/;"	t
+f_WaitVideoSync	src/common.h	/^typedef int (*f_WaitVideoSync) (int, int, unsigned *);$/;"	t
+f_glXCreateContextAttribsARB	src/common.h	/^typedef GLXContext (*f_glXCreateContextAttribsARB) (Display *dpy,$/;"	t
+fade	src/common.h	/^  bool fade         : 1;$/;"	m	struct:__anon7
+fade	src/common.h	/^  bool fade;$/;"	m	struct:_win
+fade_blacklist	src/common.h	/^  c2_lptr_t *fade_blacklist;$/;"	m	struct:_options_t
+fade_callback	src/common.h	/^  void (*fade_callback) (session_t *ps, struct _win *w);$/;"	m	struct:_win
+fade_delta	src/common.h	/^  time_ms_t fade_delta;$/;"	m	struct:_options_t
+fade_force	src/common.h	/^  switch_t fade_force;$/;"	m	struct:_win
+fade_in_step	src/common.h	/^  opacity_t fade_in_step;$/;"	m	struct:_options_t
+fade_last	src/common.h	/^  bool fade_last;$/;"	m	struct:_win
+fade_out_step	src/common.h	/^  opacity_t fade_out_step;$/;"	m	struct:_options_t
+fade_time	src/common.h	/^  time_ms_t fade_time;$/;"	m	struct:_session_t
+fade_timeout	src/compton.c	/^fade_timeout(session_t *ps) {$/;"	f	file:
+fbconfigs	src/common.h	/^  glx_fbconfig_t *fbconfigs[OPENGL_MAX_DEPTH + 1];$/;"	m	struct:__anon19
+fbo	src/common.h	/^  GLuint fbo;$/;"	m	struct:__anon14
+fds_drop	src/common.h	/^fds_drop(session_t *ps, int fd, short events) {$/;"	f
+fds_insert	src/common.h	/^fds_insert(session_t *ps, int fd, short events) {$/;"	f
+fds_insert_select	src/common.h	/^fds_insert_select(fd_set **ppfds, int fd) {$/;"	f
+fds_poll	src/common.h	/^fds_poll(session_t *ps, struct timeval *ptv) {$/;"	f
+fence	src/common.h	/^  XSyncFence fence;$/;"	m	struct:_win
+file	src/xrescheck.h	/^  const char *file;$/;"	m	struct:__anon1
+find_client_win	src/compton.c	/^find_client_win(session_t *ps, Window w) {$/;"	f	file:
+find_focused	src/common.h	/^find_focused(session_t *ps) {$/;"	f
+find_toplevel	src/common.h	/^find_toplevel(session_t *ps, Window id) {$/;"	f
+find_toplevel2	src/compton.c	/^find_toplevel2(session_t *ps, Window wid) {$/;"	f	file:
+find_win	src/common.h	/^find_win(session_t *ps, Window id) {$/;"	f
+find_win_all	src/compton.h	/^find_win_all(session_t *ps, const Window wid) {$/;"	f
+finish_destroy_win	src/compton.c	/^finish_destroy_win(session_t *ps, Window id) {$/;"	f	file:
+finish_map_win	src/compton.c	/^finish_map_win(session_t *ps, win *w) {$/;"	f	file:
+finish_unmap_win	src/compton.c	/^finish_unmap_win(session_t *ps, win *w) {$/;"	f	file:
+firstrun	src/common.h	/^  time_ms_t firstrun;$/;"	m	struct:_timeout_t
+flags	src/common.h	/^  int_fast16_t flags;$/;"	m	struct:_win
+focus	src/common.h	/^  bool focus        : 1;$/;"	m	struct:__anon7
+focus_blacklist	src/common.h	/^  c2_lptr_t *focus_blacklist;$/;"	m	struct:_options_t
+focused	src/common.h	/^  bool focused;$/;"	m	struct:_win
+focused_force	src/common.h	/^  switch_t focused_force;$/;"	m	struct:_win
+force_repaint	src/compton.c	/^force_repaint(session_t *ps) {$/;"	f
+force_win_blend	src/common.h	/^  bool force_win_blend;$/;"	m	struct:_options_t
+fork_after	src/compton.c	/^fork_after(session_t *ps) {$/;"	f	file:
+fork_after_register	src/common.h	/^  bool fork_after_register;$/;"	m	struct:_options_t
+format	src/c2.h	/^  int format;$/;"	m	struct:__anon28
+format	src/c2.h	/^  int format;$/;"	m	struct:_c2_l
+format	src/common.h	/^  int format;$/;"	m	struct:__anon8
+frag_shader	src/common.h	/^  GLuint frag_shader;$/;"	m	struct:__anon13
+frame_extents	src/common.h	/^  margin_t frame_extents;$/;"	m	struct:_win
+frame_opacity	src/common.h	/^  double frame_opacity;$/;"	m	struct:_options_t
+frame_opacity	src/common.h	/^  double frame_opacity;$/;"	m	struct:_win
+free_all_damage_last	src/common.h	/^free_all_damage_last(session_t *ps) {$/;"	f
+free_damage	src/compton.h	/^free_damage(session_t *ps, Damage *p) {$/;"	f
+free_fence	src/common.h	/^free_fence(session_t *ps, XSyncFence *pfence) {$/;"	f
+free_fence	src/common.h	2012;"	d
+free_glx_bc	src/common.h	/^free_glx_bc(session_t *ps, glx_blur_cache_t *pbc) {$/;"	f
+free_glx_bc_resize	src/common.h	/^free_glx_bc_resize(session_t *ps, glx_blur_cache_t *pbc) {$/;"	f
+free_glx_fbo	src/common.h	/^free_glx_fbo(session_t *ps, GLuint *pfbo) {$/;"	f
+free_paint	src/compton.h	/^free_paint(session_t *ps, paint_t *ppaint) {$/;"	f
+free_paint_glx	src/common.h	/^free_paint_glx(session_t *ps, paint_t *ppaint) {$/;"	f
+free_picture	src/compton.h	/^free_picture(session_t *ps, Picture *p) {$/;"	f
+free_pixmap	src/compton.h	/^free_pixmap(session_t *ps, Pixmap *p) {$/;"	f
+free_reg_data	src/compton.h	/^free_reg_data(reg_data_t *pregd) {$/;"	f
+free_region	src/common.h	/^free_region(session_t *ps, XserverRegion *p) {$/;"	f
+free_root_tile	src/compton.h	/^free_root_tile(session_t *ps) {$/;"	f
+free_texture	src/common.h	/^free_texture(session_t *ps, glx_texture_t **pptex) {$/;"	f
+free_texture_r	src/common.h	/^free_texture_r(session_t *ps, GLuint *ptexture) {$/;"	f
+free_win_res	src/compton.h	/^free_win_res(session_t *ps, win *w) {$/;"	f
+free_win_res_glx	src/common.h	/^free_win_res_glx(session_t *ps, win *w) {$/;"	f
+free_wincondlst	src/compton.h	/^free_wincondlst(c2_lptr_t **pcondlst) {$/;"	f
+free_winprop	src/common.h	/^free_winprop(winprop_t *pprop) {$/;"	f
+free_wpaint	src/compton.h	/^free_wpaint(session_t *ps, win *w) {$/;"	f
+free_xinerama_info	src/compton.h	/^free_xinerama_info(session_t *ps) {$/;"	f
+func	src/xrescheck.h	/^  const char *func;$/;"	m	struct:__anon1
+gaussian	src/compton.c	/^gaussian(double r, double x, double y) {$/;"	f	file:
+gaussian_map	src/common.h	/^  conv *gaussian_map;$/;"	m	struct:_session_t
+gen_box	bin/compton-convgen.py	/^def gen_box(width, height, factors):$/;"	f
+gen_gaussian	bin/compton-convgen.py	/^def gen_gaussian(width, height, factors):$/;"	f
+geom_to_rect	src/compton.h	/^geom_to_rect(session_t *ps, const geometry_t *src, const XRectangle *def) {$/;"	f
+geometry_t	src/common.h	/^} geometry_t;$/;"	t	typeref:struct:__anon4
+get_alpha_pict_d	src/compton.c	/^get_alpha_pict_d(session_t *ps, double o) {$/;"	f	file:
+get_alpha_pict_o	src/compton.c	/^get_alpha_pict_o(session_t *ps, opacity_t o) {$/;"	f	file:
+get_atom	src/common.h	/^get_atom(session_t *ps, const char *atom_name) {$/;"	f
+get_cfg	src/compton.c	/^get_cfg(session_t *ps, int argc, char *const *argv, bool first_pass) {$/;"	f	file:
+get_fbconfig_from_visualinfo	src/opengl.c	/^get_fbconfig_from_visualinfo(session_t *ps, const XVisualInfo *visualinfo) {$/;"	f	file:
+get_frame_extents	src/compton.c	/^get_frame_extents(session_t *ps, win *w, Window client) {$/;"	f	file:
+get_opacity_percent	src/compton.c	/^get_opacity_percent(win *w) {$/;"	f	file:
+get_root_tile	src/compton.c	/^get_root_tile(session_t *ps) {$/;"	f	file:
+get_screen_region	src/compton.h	/^get_screen_region(session_t *ps) {$/;"	f
+get_tgt_window	src/common.h	/^get_tgt_window(session_t *ps) {$/;"	f
+get_time_ms	src/compton.h	/^get_time_ms(void) {$/;"	f
+get_time_timespec	src/common.h	/^get_time_timespec(void) {$/;"	f
+get_time_timeval	src/common.h	/^get_time_timeval(void) {$/;"	f
+get_visualinfo_from_visual	src/opengl.h	/^get_visualinfo_from_visual(session_t *ps, Visual *visual) {$/;"	f
+glClientWaitSyncProc	src/common.h	/^  f_ClientWaitSync glClientWaitSyncProc;$/;"	m	struct:__anon19
+glDeleteSyncProc	src/common.h	/^  f_DeleteSync glDeleteSyncProc;$/;"	m	struct:__anon19
+glFenceSyncProc	src/common.h	/^  f_FenceSync glFenceSyncProc;$/;"	m	struct:__anon19
+glFrameTerminatorGREMEDY	src/common.h	/^  f_FrameTerminatorGREMEDY glFrameTerminatorGREMEDY;$/;"	m	struct:__anon19
+glImportSyncEXT	src/common.h	/^  f_ImportSyncEXT glImportSyncEXT;$/;"	m	struct:__anon19
+glIsSyncProc	src/common.h	/^  f_IsSync glIsSyncProc;$/;"	m	struct:__anon19
+glStringMarkerGREMEDY	src/common.h	/^  f_StringMarkerGREMEDY glStringMarkerGREMEDY;$/;"	m	struct:__anon19
+glWaitSyncProc	src/common.h	/^  f_WaitSync glWaitSyncProc;$/;"	m	struct:__anon19
+glXBindTexImageProc	src/common.h	/^  f_BindTexImageEXT glXBindTexImageProc;$/;"	m	struct:__anon19
+glXCopySubBufferProc	src/common.h	/^  f_CopySubBuffer glXCopySubBufferProc;$/;"	m	struct:__anon19
+glXGetSyncValuesOML	src/common.h	/^  f_GetSyncValuesOML glXGetSyncValuesOML;$/;"	m	struct:__anon19
+glXGetVideoSyncSGI	src/common.h	/^  f_GetVideoSync glXGetVideoSyncSGI;$/;"	m	struct:__anon19
+glXReleaseTexImageProc	src/common.h	/^  f_ReleaseTexImageEXT glXReleaseTexImageProc;$/;"	m	struct:__anon19
+glXSwapIntervalMESAProc	src/common.h	/^  f_SwapIntervalMESA glXSwapIntervalMESAProc;$/;"	m	struct:__anon19
+glXSwapIntervalProc	src/common.h	/^  f_SwapIntervalSGI glXSwapIntervalProc;$/;"	m	struct:__anon19
+glXWaitForMscOML	src/common.h	/^  f_WaitForMscOML glXWaitForMscOML;$/;"	m	struct:__anon19
+glXWaitVideoSyncSGI	src/common.h	/^  f_WaitVideoSync glXWaitVideoSyncSGI;$/;"	m	struct:__anon19
+glpixmap	src/common.h	/^  GLXPixmap glpixmap;$/;"	m	struct:_glx_texture
+glx_bind_pixmap	src/opengl.c	/^glx_bind_pixmap(session_t *ps, glx_texture_t **pptex, Pixmap pixmap,$/;"	f
+glx_blur_cache	src/common.h	/^  glx_blur_cache_t glx_blur_cache;$/;"	m	struct:_win
+glx_blur_cache_t	src/common.h	/^} glx_blur_cache_t;$/;"	t	typeref:struct:__anon14
+glx_blur_dst	src/opengl.c	/^glx_blur_dst(session_t *ps, int dx, int dy, int width, int height, float z,$/;"	f
+glx_blur_pass_t	src/common.h	/^} glx_blur_pass_t;$/;"	t	typeref:struct:__anon13
+glx_check_err	src/opengl.h	61;"	d
+glx_check_err	src/opengl.h	63;"	d
+glx_check_err_	src/opengl.h	/^glx_check_err_(session_t *ps, const char *func, int line) {$/;"	f
+glx_cmp_fbconfig	src/opengl.c	/^glx_cmp_fbconfig(session_t *ps,$/;"	f	file:
+glx_cmp_fbconfig_cmpattr	src/opengl.c	/^glx_cmp_fbconfig_cmpattr(session_t *ps,$/;"	f	file:
+glx_copy_from_front	src/common.h	/^  bool glx_copy_from_front;$/;"	m	struct:_options_t
+glx_copy_region_to_tex	src/opengl.c	/^glx_copy_region_to_tex(session_t *ps, GLenum tex_tgt, int basex, int basey,$/;"	f	file:
+glx_create_program	src/opengl.c	/^glx_create_program(const GLuint * const shaders, int nshaders) {$/;"	f
+glx_create_program_from_str	src/opengl.c	/^glx_create_program_from_str(const char *vert_shader_str,$/;"	f
+glx_create_shader	src/opengl.c	/^glx_create_shader(GLenum shader_type, const char *shader_str) {$/;"	f
+glx_debug_msg_callback	src/opengl.c	/^glx_debug_msg_callback(GLenum source, GLenum type,$/;"	f	file:
+glx_destroy	src/opengl.c	/^glx_destroy(session_t *ps) {$/;"	f
+glx_dim_dst	src/opengl.c	/^glx_dim_dst(session_t *ps, int dx, int dy, int width, int height, float z,$/;"	f
+glx_dump_err_str	src/opengl.h	/^glx_dump_err_str(GLenum err) {$/;"	f
+glx_error	src/common.h	/^  int glx_error;$/;"	m	struct:_session_t
+glx_event	src/common.h	/^  int glx_event;$/;"	m	struct:_session_t
+glx_exists	src/common.h	/^  bool glx_exists;$/;"	m	struct:_session_t
+glx_fbconfig_t	src/common.h	/^} glx_fbconfig_t;$/;"	t	typeref:struct:__anon12
+glx_free_prog_main	src/opengl.c	/^glx_free_prog_main(session_t *ps, glx_prog_main_t *pprogram) {$/;"	f	file:
+glx_fshader_win_str	src/common.h	/^  char *glx_fshader_win_str;$/;"	m	struct:_options_t
+glx_gen_texture	src/opengl.c	/^glx_gen_texture(session_t *ps, GLenum tex_tgt, int width, int height) {$/;"	f	file:
+glx_has_context	src/common.h	/^glx_has_context(session_t *ps) {$/;"	f
+glx_hasglext	src/opengl.h	/^glx_hasglext(session_t *ps, const char *ext) {$/;"	f
+glx_hasglxext	src/opengl.h	/^glx_hasglxext(session_t *ps, const char *ext) {$/;"	f
+glx_init	src/opengl.c	/^glx_init(session_t *ps, bool need_render) {$/;"	f
+glx_init_blur	src/opengl.c	/^glx_init_blur(session_t *ps) {$/;"	f
+glx_load_prog_main	src/opengl.c	/^glx_load_prog_main(session_t *ps,$/;"	f
+glx_mark	src/common.h	2358;"	d
+glx_mark_	src/common.h	/^glx_mark_(session_t *ps, const char *func, XID xid, bool start) {$/;"	f
+glx_mark_frame	src/common.h	/^glx_mark_frame(session_t *ps) {$/;"	f
+glx_no_rebind_pixmap	src/common.h	/^  bool glx_no_rebind_pixmap;$/;"	m	struct:_options_t
+glx_no_stencil	src/common.h	/^  bool glx_no_stencil;$/;"	m	struct:_options_t
+glx_on_root_change	src/opengl.c	/^glx_on_root_change(session_t *ps) {$/;"	f
+glx_paint_pre	src/opengl.c	/^glx_paint_pre(session_t *ps, XserverRegion *preg) {$/;"	f
+glx_prog_main_t	src/common.h	/^} glx_prog_main_t;$/;"	t	typeref:struct:__anon15
+glx_prog_win	src/common.h	/^  glx_prog_main_t glx_prog_win;$/;"	m	struct:_options_t
+glx_reinit	src/opengl.c	/^glx_reinit(session_t *ps, bool need_render) {$/;"	f
+glx_reinit_on_root_change	src/common.h	/^  bool glx_reinit_on_root_change;$/;"	m	struct:_options_t
+glx_release_pixmap	src/opengl.c	/^glx_release_pixmap(session_t *ps, glx_texture_t *ptex) {$/;"	f
+glx_render	src/common.h	2221;"	d
+glx_render	src/common.h	2225;"	d
+glx_render_	src/opengl.c	/^glx_render_(session_t *ps, const glx_texture_t *ptex,$/;"	f
+glx_render_color	src/opengl.c	/^glx_render_color(session_t *ps, int dx, int dy, int width, int height, int z,$/;"	f	file:
+glx_render_dots	src/opengl.c	/^glx_render_dots(session_t *ps, int dx, int dy, int width, int height, int z,$/;"	f	file:
+glx_session_t	src/common.h	/^} glx_session_t;$/;"	t	typeref:struct:__anon19
+glx_set_clip	src/opengl.c	/^glx_set_clip(session_t *ps, XserverRegion reg, const reg_data_t *pcache_reg) {$/;"	f
+glx_swap_copysubbuffermesa	src/opengl.c	/^glx_swap_copysubbuffermesa(session_t *ps, XserverRegion reg) {$/;"	f
+glx_swap_method	src/common.h	/^  int glx_swap_method;$/;"	m	struct:_options_t
+glx_take_screenshot	src/opengl.c	/^glx_take_screenshot(session_t *ps, int *out_length) {$/;"	f
+glx_tex_binded	src/common.h	/^glx_tex_binded(const glx_texture_t *ptex, Pixmap pixmap) {$/;"	f
+glx_texture_t	src/common.h	/^typedef struct _glx_texture glx_texture_t;$/;"	t	typeref:struct:_glx_texture
+glx_update_fbconfig	src/opengl.c	/^glx_update_fbconfig(session_t *ps) {$/;"	f	file:
+glx_update_fbconfig_bydepth	src/opengl.c	/^glx_update_fbconfig_bydepth(session_t *ps, int depth, glx_fbconfig_t *pfbcfg) {$/;"	f	file:
+glx_use_copysubbuffermesa	src/common.h	/^  bool glx_use_copysubbuffermesa;$/;"	m	struct:_options_t
+glx_use_gpushader4	src/common.h	/^  bool glx_use_gpushader4;$/;"	m	struct:_options_t
+group_is_focused	src/compton.h	/^group_is_focused(session_t *ps, Window leader) {$/;"	f
+group_update_focused	src/compton.h	/^group_update_focused(session_t *ps, Window leader) {$/;"	f
+gs_xid_records	src/xrescheck.c	/^static xrc_xid_record_t *gs_xid_records = NULL;$/;"	v	file:
+has_name_pixmap	src/common.h	/^  bool has_name_pixmap;$/;"	m	struct:_session_t
+has_texture_non_power_of_two	src/common.h	/^  bool has_texture_non_power_of_two;$/;"	m	struct:__anon19
+hei	src/common.h	/^  int hei;$/;"	m	struct:__anon4
+height	src/common.h	/^  int height;$/;"	m	struct:__anon14
+height	src/common.h	/^  unsigned height;$/;"	m	struct:_glx_texture
+heightb	src/common.h	/^  int widthb, heightb;$/;"	m	struct:_win
+hexdump	src/common.h	/^hexdump(const char *data, int len) {$/;"	f
+hh	src/xrescheck.h	/^  UT_hash_handle hh;$/;"	m	struct:__anon1
+id	src/common.h	/^  Window id;$/;"	m	struct:_win
+idling	src/common.h	/^  bool idling;$/;"	m	struct:_session_t
+ignore_head	src/common.h	/^  ignore_t *ignore_head;$/;"	m	struct:_session_t
+ignore_t	src/common.h	/^} ignore_t;$/;"	t	typeref:struct:_ignore
+ignore_tail	src/common.h	/^  ignore_t **ignore_tail;$/;"	m	struct:_session_t
+in_openclose	src/common.h	/^  bool in_openclose;$/;"	m	struct:_win
+inactive_dim	src/common.h	/^  double inactive_dim;$/;"	m	struct:_options_t
+inactive_dim_fixed	src/common.h	/^  bool inactive_dim_fixed;$/;"	m	struct:_options_t
+inactive_opacity	src/common.h	/^  opacity_t inactive_opacity;$/;"	m	struct:_options_t
+inactive_opacity_override	src/common.h	/^  bool inactive_opacity_override;$/;"	m	struct:_options_t
+index	src/c2.h	/^  int index;$/;"	m	struct:_c2_l
+init_alpha_picts	src/compton.c	/^init_alpha_picts(session_t *ps) {$/;"	f	file:
+init_atoms	src/compton.c	/^init_atoms(session_t *ps) {$/;"	f	file:
+init_dbe	src/compton.c	/^init_dbe(session_t *ps) {$/;"	f	file:
+init_filters	src/compton.c	/^init_filters(session_t *ps) {$/;"	f	file:
+init_overlay	src/compton.c	/^init_overlay(session_t *ps) {$/;"	f	file:
+interval	src/common.h	/^  time_ms_t interval;$/;"	m	struct:_timeout_t
+invert_color	src/common.h	/^  bool invert_color : 1;$/;"	m	struct:__anon7
+invert_color	src/common.h	/^  bool invert_color;$/;"	m	struct:_win
+invert_color_force	src/common.h	/^  switch_t invert_color_force;$/;"	m	struct:_win
+invert_color_last	src/common.h	/^  bool invert_color_last;$/;"	m	struct:_win
+invert_color_list	src/common.h	/^  c2_lptr_t *invert_color_list;$/;"	m	struct:_options_t
+is_region_empty	src/compton.h	/^is_region_empty(const session_t *ps, XserverRegion region,$/;"	f
+isbranch	src/c2.h	/^  bool isbranch : 1;$/;"	m	struct:__anon21
+isdamagenotify	src/compton.h	/^isdamagenotify(session_t *ps, const XEvent *ev) {$/;"	f
+l	src/c2.h	/^    c2_l_t *l;$/;"	m	union:__anon21::__anon22
+lastrun	src/common.h	/^  time_ms_t lastrun;$/;"	m	struct:_timeout_t
+latom_t	src/common.h	/^} latom_t;$/;"	t	typeref:struct:_latom
+lcfg_lookup_bool	src/compton.h	/^lcfg_lookup_bool(const config_t *config, const char *path,$/;"	f
+lcfg_lookup_int	src/compton.h	/^lcfg_lookup_int(const config_t *config, const char *path, int *value) {$/;"	f
+leader	src/common.h	/^  Window leader;$/;"	m	struct:_win
+leaf_def	src/c2.h	/^const static c2_l_t leaf_def = C2_L_INIT;$/;"	v
+left	src/common.h	/^  int left;$/;"	m	struct:__anon5
+likely	src/common.h	157;"	d
+line	src/xrescheck.h	/^  int line;$/;"	m	struct:__anon1
+list	src/common.h	/^  struct _win *list;$/;"	m	struct:_session_t	typeref:struct:_session_t::_win
+logpath	src/common.h	/^  char *logpath;$/;"	m	struct:_options_t
+main	make-release.sh	/^main() {$/;"	f
+main	src/compton.c	/^main(int argc, char **argv) {$/;"	f
+main	tests/cmake-test.sh	/^main() {$/;"	f
+mainloop	src/compton.c	/^mainloop(session_t *ps) {$/;"	f	file:
+make_gaussian_map	src/compton.c	/^make_gaussian_map(double r) {$/;"	f	file:
+make_shadow	src/compton.c	/^make_shadow(session_t *ps, double opacity,$/;"	f	file:
+make_text_prop	src/compton.h	/^make_text_prop(session_t *ps, char *str) {$/;"	f
+map_win	src/compton.c	/^map_win(session_t *ps, Window id) {$/;"	f	file:
+margin_t	src/common.h	/^} margin_t;$/;"	t	typeref:struct:__anon5
+mark_ovredir_focused	src/common.h	/^  bool mark_ovredir_focused;$/;"	m	struct:_options_t
+mark_wmwin_focused	src/common.h	/^  bool mark_wmwin_focused;$/;"	m	struct:_options_t
+match	src/c2.h	/^  } match     : 3;$/;"	m	struct:_c2_l	typeref:enum:_c2_l::__anon25
+match_ignorecase	src/c2.h	/^  bool match_ignorecase : 1;$/;"	m	struct:_c2_l
+math	bin/compton-convgen.py	/^import math$/;"	i
+max_i	src/common.h	/^max_i(int a, int b) {$/;"	f
+max_l	src/common.h	/^max_l(long a, long b) {$/;"	f
+mbuild	bin/compton-convgen.py	/^def mbuild(width, height):$/;"	f
+mdump	bin/compton-convgen.py	/^def mdump(matrix):$/;"	f
+mdumpcompton	bin/compton-convgen.py	/^def mdumpcompton(matrix):$/;"	f
+menu_opacity	src/common.h	/^  double menu_opacity;$/;"	m	struct:options_tmp
+min_i	src/common.h	/^min_i(int a, int b) {$/;"	f
+min_l	src/common.h	/^min_l(long a, long b) {$/;"	f
+mmirror4	bin/compton-convgen.py	/^def mmirror4(matrix):$/;"	f
+mnormalize	bin/compton-convgen.py	/^def mnormalize(matrix):$/;"	f
+mode	src/common.h	/^  winmode_t mode;$/;"	m	struct:_win
+ms_to_tv	src/compton.h	/^ms_to_tv(int timeout) {$/;"	f
+mstrcpy	src/common.h	/^mstrcpy(const char *src) {$/;"	f
+mstrextend	src/common.h	/^mstrextend(char **psrc1, const char *src2) {$/;"	f
+mstrjoin	src/common.h	/^mstrjoin(const char *src1, const char *src2) {$/;"	f
+mstrjoin3	src/common.h	/^mstrjoin3(const char *src1, const char *src2, const char *src3) {$/;"	f
+mstrncmp	src/c2.h	217;"	d
+mstrncpy	src/common.h	/^mstrncpy(const char *src, unsigned len) {$/;"	f
+n_expose	src/common.h	/^  int n_expose;$/;"	m	struct:_session_t
+name	src/c2.h	/^  const char *name;$/;"	m	struct:__anon28
+name	src/common.h	/^  char *name;$/;"	m	struct:_win
+need_configure	src/common.h	/^  bool need_configure;$/;"	m	struct:_win
+neg	src/c2.h	/^  bool neg      : 1;$/;"	m	struct:_c2_b
+neg	src/c2.h	/^  bool neg    : 1;$/;"	m	struct:_c2_l
+next	src/c2.h	/^  struct _c2_lptr *next;$/;"	m	struct:_c2_lptr	typeref:struct:_c2_lptr::_c2_lptr
+next	src/common.h	/^  struct _ignore *next;$/;"	m	struct:_ignore	typeref:struct:_ignore::_ignore
+next	src/common.h	/^  struct _latom *next;$/;"	m	struct:_latom	typeref:struct:_latom::_latom
+next	src/common.h	/^  struct _timeout_t *next;$/;"	m	struct:_timeout_t	typeref:struct:_timeout_t::_timeout_t
+next	src/common.h	/^  struct _win *next;$/;"	m	struct:_win	typeref:struct:_win::_win
+nfds_max	src/common.h	/^  int nfds_max;$/;"	m	struct:_session_t
+nitems	src/common.h	/^  unsigned long nitems;$/;"	m	struct:__anon8
+no_dnd_shadow	src/common.h	/^  bool no_dnd_shadow;$/;"	m	struct:options_tmp
+no_dock_shadow	src/common.h	/^  bool no_dock_shadow;$/;"	m	struct:options_tmp
+no_fading_destroyed_argb	src/common.h	/^  bool no_fading_destroyed_argb;$/;"	m	struct:_options_t
+no_fading_openclose	src/common.h	/^  bool no_fading_openclose;$/;"	m	struct:_options_t
+no_name_pixmap	src/common.h	/^  bool no_name_pixmap;$/;"	m	struct:_options_t
+no_x_selection	src/common.h	/^  bool no_x_selection;$/;"	m	struct:_options_t
+normalize_conv_kern	src/compton.h	/^normalize_conv_kern(int wid, int hei, XFixed *kern) {$/;"	f
+normalize_d	src/common.h	/^normalize_d(double d) {$/;"	f
+normalize_d_range	src/common.h	/^normalize_d_range(double d, double min, double max) {$/;"	f
+normalize_i_range	src/common.h	/^normalize_i_range(int i, int min, int max) {$/;"	f
+nrects	src/common.h	/^  int nrects;$/;"	m	struct:__anon18
+o	src/common.h	/^  options_t o;$/;"	m	struct:_session_t
+op	src/c2.h	/^  c2_b_op_t op;$/;"	m	struct:_c2_b
+op	src/c2.h	/^  } op        : 3;$/;"	m	struct:_c2_l	typeref:enum:_c2_l::__anon24
+opacity	src/common.h	/^  opacity_t opacity;$/;"	m	struct:_win
+opacity_prop	src/common.h	/^  opacity_t opacity_prop;$/;"	m	struct:_win
+opacity_prop_client	src/common.h	/^  opacity_t opacity_prop_client;$/;"	m	struct:_win
+opacity_rules	src/common.h	/^  c2_lptr_t *opacity_rules;$/;"	m	struct:_options_t
+opacity_set	src/common.h	/^  opacity_t opacity_set;$/;"	m	struct:_win
+opacity_t	src/common.h	/^typedef uint32_t opacity_t;$/;"	t
+opacity_tgt	src/common.h	/^  opacity_t opacity_tgt;$/;"	m	struct:_win
+open_config_file	src/compton.c	/^open_config_file(char *cpath, char **ppath) {$/;"	f	file:
+opr1	src/c2.h	/^  c2_ptr_t opr1;$/;"	m	struct:_c2_b
+opr2	src/c2.h	/^  c2_ptr_t opr2;$/;"	m	struct:_c2_b
+options_t	src/common.h	/^} options_t;$/;"	t	typeref:struct:_options_t
+options_tmp	src/common.h	/^struct options_tmp {$/;"	s
+opts_init_track_focus	src/compton.c	/^opts_init_track_focus(session_t *ps) {$/;"	f
+opts_set_no_fading_openclose	src/compton.c	/^opts_set_no_fading_openclose(session_t *ps, bool newval) {$/;"	f
+ostream_reopen	src/compton.c	/^ostream_reopen(session_t *ps, const char *path) {$/;"	f	file:
+overlay	src/common.h	/^  Window overlay;$/;"	m	struct:_session_t
+p16	src/common.h	/^    short *p16;$/;"	m	union:__anon8::__anon9
+p32	src/common.h	/^    long *p32;$/;"	m	union:__anon8::__anon9
+p8	src/common.h	/^    unsigned char *p8;$/;"	m	union:__anon8::__anon9
+paint	src/common.h	/^  paint_t paint;$/;"	m	struct:_win
+paint_all	src/compton.c	/^paint_all(session_t *ps, XserverRegion region, XserverRegion region_real, win *t) {$/;"	f	file:
+paint_bind_tex	src/compton.h	/^paint_bind_tex(session_t *ps, paint_t *ppaint,$/;"	f
+paint_bind_tex_real	src/compton.h	/^paint_bind_tex_real(session_t *ps, paint_t *ppaint,$/;"	f
+paint_blacklist	src/common.h	/^  c2_lptr_t *paint_blacklist;$/;"	m	struct:_options_t
+paint_excluded	src/common.h	/^  bool paint_excluded;$/;"	m	struct:_win
+paint_isvalid	src/compton.h	/^paint_isvalid(session_t *ps, const paint_t *ppaint) {$/;"	f
+paint_on_overlay	src/common.h	/^  bool paint_on_overlay;$/;"	m	struct:_options_t
+paint_preprocess	src/compton.c	/^paint_preprocess(session_t *ps, win *list) {$/;"	f	file:
+paint_root	src/compton.c	/^paint_root(session_t *ps, XserverRegion reg_paint) {$/;"	f	file:
+paint_t	src/common.h	/^} paint_t;$/;"	t	typeref:struct:__anon16
+paint_tm_offset	src/common.h	/^  long paint_tm_offset;$/;"	m	struct:_session_t
+parse_backend	src/common.h	/^parse_backend(session_t *ps, const char *str) {$/;"	f
+parse_cfg_condlst	src/compton.c	/^parse_cfg_condlst(session_t *ps, const config_t *pcfg, c2_lptr_t **pcondlst,$/;"	f	file:
+parse_cfg_condlst_opct	src/compton.c	/^parse_cfg_condlst_opct(session_t *ps, const config_t *pcfg, const char *name) {$/;"	f	file:
+parse_config	src/compton.c	/^parse_config(session_t *ps, struct options_tmp *pcfgtmp) {$/;"	f	file:
+parse_conv_kern	src/compton.c	/^parse_conv_kern(session_t *ps, const char *src, const char **endptr) {$/;"	f	file:
+parse_conv_kern_lst	src/compton.c	/^parse_conv_kern_lst(session_t *ps, const char *src, XFixed **dest, int max) {$/;"	f	file:
+parse_geometry	src/compton.c	/^parse_geometry(session_t *ps, const char *src, geometry_t *dest) {$/;"	f	file:
+parse_glx_swap_method	src/common.h	/^parse_glx_swap_method(session_t *ps, const char *str) {$/;"	f
+parse_long	src/compton.c	/^parse_long(const char *s, long *dest) {$/;"	f	file:
+parse_matrix	src/compton.c	/^parse_matrix(session_t *ps, const char *src, const char **endptr) {$/;"	f	file:
+parse_matrix_readnum	src/compton.c	/^parse_matrix_readnum(const char *src, double *dest) {$/;"	f	file:
+parse_rule_opacity	src/compton.c	/^parse_rule_opacity(session_t *ps, const char *src) {$/;"	f	file:
+parse_vsync	src/common.h	/^parse_vsync(session_t *ps, const char *str) {$/;"	f
+pfds_except	src/common.h	/^  fd_set *pfds_except;$/;"	m	struct:_session_t
+pfds_read	src/common.h	/^  fd_set *pfds_read;$/;"	m	struct:_session_t
+pfds_write	src/common.h	/^  fd_set *pfds_write;$/;"	m	struct:_session_t
+pict	src/common.h	/^  Picture pict;$/;"	m	struct:__anon16
+pictfmt	src/common.h	/^  XRenderPictFormat *pictfmt;$/;"	m	struct:_win
+pixmap	src/common.h	/^  Pixmap pixmap;$/;"	m	struct:__anon16
+pixmap	src/common.h	/^  Pixmap pixmap;$/;"	m	struct:_glx_texture
+pixmap_damaged	src/common.h	/^  bool pixmap_damaged;$/;"	m	struct:_win
+predef	src/c2.h	/^  } predef;$/;"	m	struct:_c2_l	typeref:enum:_c2_l::__anon26
+presum_gaussian	src/compton.c	/^presum_gaussian(session_t *ps, conv *map) {$/;"	f	file:
+prev_trans	src/common.h	/^  struct _win *prev_trans;$/;"	m	struct:_win	typeref:struct:_win::_win
+print_backtrace	src/common.h	/^print_backtrace(void) {$/;"	f
+print_timestamp	src/common.h	/^print_timestamp(session_t *ps) {$/;"	f
+printf_dbg	src/common.h	178;"	d
+printf_dbgf	src/common.h	183;"	d
+printf_err	src/common.h	163;"	d
+printf_errf	src/common.h	167;"	d
+printf_errfq	src/common.h	172;"	d
+prog	src/common.h	/^  GLuint prog;$/;"	m	struct:__anon13
+prog	src/common.h	/^  GLuint prog;$/;"	m	struct:__anon15
+prop_shadow	src/common.h	/^  long prop_shadow;$/;"	m	struct:_win
+ps_g	src/compton.c	/^session_t *ps_g = NULL;$/;"	v
+psglx	src/common.h	/^  glx_session_t *psglx;$/;"	m	struct:_session_t
+ptex	src/common.h	/^  glx_texture_t *ptex;$/;"	m	struct:__anon16
+ptnint	src/c2.h	/^  long ptnint;$/;"	m	struct:_c2_l
+ptnstr	src/c2.h	/^  char *ptnstr;$/;"	m	struct:_c2_l
+ptntype	src/c2.h	/^  } ptntype;$/;"	m	struct:_c2_l	typeref:enum:_c2_l::__anon27
+ptr	src/c2.h	/^  c2_ptr_t ptr;$/;"	m	struct:_c2_lptr
+queue_configure	src/common.h	/^  XConfigureEvent queue_configure;$/;"	m	struct:_win
+randr_error	src/common.h	/^  int randr_error;$/;"	m	struct:_session_t
+randr_event	src/common.h	/^  int randr_event;$/;"	m	struct:_session_t
+randr_exists	src/common.h	/^  bool randr_exists;$/;"	m	struct:_session_t
+rebuild_screen_reg	src/compton.c	/^rebuild_screen_reg(session_t *ps) {$/;"	f	file:
+rebuild_shadow_exclude_reg	src/compton.c	/^rebuild_shadow_exclude_reg(session_t *ps) {$/;"	f	file:
+recheck_focus	src/compton.c	/^recheck_focus(session_t *ps) {$/;"	f	file:
+rect_crop	src/common.h	/^rect_crop(XRectangle *pdst, const XRectangle *psrc, const XRectangle *pbound) {$/;"	f
+rect_is_fullscreen	src/common.h	/^rect_is_fullscreen(session_t *ps, int x, int y, unsigned wid, unsigned hei) {$/;"	f
+rect_to_reg	src/compton.h	/^rect_to_reg(session_t *ps, const XRectangle *src) {$/;"	f
+rects	src/common.h	/^  XRectangle *rects;$/;"	m	struct:__anon18
+redir_start	src/compton.c	/^redir_start(session_t *ps) {$/;"	f	file:
+redir_stop	src/compton.c	/^redir_stop(session_t *ps) {$/;"	f	file:
+redirected	src/common.h	/^  bool redirected;$/;"	m	struct:_session_t
+redirected_force	src/common.h	/^  switch_t redirected_force;$/;"	m	struct:_options_t
+refresh_intv	src/common.h	/^  long refresh_intv;$/;"	m	struct:_session_t
+refresh_rate	src/common.h	/^  int refresh_rate;$/;"	m	struct:_options_t
+refresh_rate	src/common.h	/^  short refresh_rate;$/;"	m	struct:_session_t
+reg_data_t	src/common.h	/^} reg_data_t;$/;"	t	typeref:struct:__anon18
+reg_ignore	src/common.h	/^  XserverRegion reg_ignore;$/;"	m	struct:_win
+reg_ignore_expire	src/common.h	/^  bool reg_ignore_expire;$/;"	m	struct:_session_t
+reg_win	src/common.h	/^  Window reg_win;$/;"	m	struct:_session_t
+regex_pcre	src/c2.h	/^  pcre *regex_pcre;$/;"	m	struct:_c2_l
+regex_pcre_extra	src/c2.h	/^  pcre_extra *regex_pcre_extra;$/;"	m	struct:_c2_l
+register_cm	src/compton.c	/^register_cm(session_t *ps) {$/;"	f	file:
+render	src/compton.h	702;"	d
+render	src/compton.h	706;"	d
+render_	src/compton.c	/^render_(session_t *ps, int x, int y, int dx, int dy, int wid, int hei,$/;"	f	file:
+render_error	src/common.h	/^  int render_error;$/;"	m	struct:_session_t
+render_event	src/common.h	/^  int render_event;$/;"	m	struct:_session_t
+repair_win	src/compton.c	/^repair_win(session_t *ps, win *w) {$/;"	f	file:
+reredir_on_root_change	src/common.h	/^  bool reredir_on_root_change;$/;"	m	struct:_options_t
+reset	src/common.h	/^  bool reset;$/;"	m	struct:_session_t
+reset_enable	src/compton.c	/^reset_enable(int __attribute__((unused)) signum) {$/;"	f	file:
+resize_damage	src/common.h	/^  int resize_damage;$/;"	m	struct:_options_t
+resize_region	src/compton.h	/^resize_region(session_t *ps, XserverRegion region, short mod) {$/;"	f
+respect_prop_shadow	src/common.h	/^  bool respect_prop_shadow;$/;"	m	struct:_options_t
+restack_win	src/compton.c	/^restack_win(session_t *ps, win *w, Window new_above) {$/;"	f	file:
+right	src/common.h	/^  int right;$/;"	m	struct:__anon5
+role	src/common.h	/^  char *role;$/;"	m	struct:_win
+root	src/common.h	/^  Window root;$/;"	m	struct:_session_t
+root_damaged	src/compton.c	/^root_damaged(session_t *ps) {$/;"	f	file:
+root_dbe	src/common.h	/^  XdbeBackBuffer root_dbe;$/;"	m	struct:_session_t
+root_height	src/common.h	/^  int root_height;$/;"	m	struct:_session_t
+root_picture	src/common.h	/^  Picture root_picture;$/;"	m	struct:_session_t
+root_tile_fill	src/common.h	/^  bool root_tile_fill;$/;"	m	struct:_session_t
+root_tile_paint	src/common.h	/^  paint_t root_tile_paint;$/;"	m	struct:_session_t
+root_width	src/common.h	/^  int root_width;$/;"	m	struct:_session_t
+rounded_corners	src/common.h	/^  bool rounded_corners;$/;"	m	struct:_win
+run_fade	src/compton.c	/^run_fade(session_t *ps, win *w, unsigned steps) {$/;"	f	file:
+scr	src/common.h	/^  int scr;$/;"	m	struct:_session_t
+screen_reg	src/common.h	/^  XserverRegion screen_reg;$/;"	m	struct:_session_t
+sequence	src/common.h	/^  unsigned long sequence;$/;"	m	struct:_ignore
+session_destroy	src/compton.c	/^session_destroy(session_t *ps) {$/;"	f	file:
+session_init	src/compton.c	/^session_init(session_t *ps_old, int argc, char **argv) {$/;"	f	file:
+session_run	src/compton.c	/^session_run(session_t *ps) {$/;"	f	file:
+session_t	src/common.h	/^} session_t;$/;"	t	typeref:struct:_session_t
+set_fade_callback	src/compton.c	/^set_fade_callback(session_t *ps, win *w,$/;"	f	file:
+set_ignore	src/compton.c	/^set_ignore(session_t *ps, unsigned long sequence) {$/;"	f	file:
+set_ignore_next	src/compton.h	/^set_ignore_next(session_t *ps) {$/;"	f
+set_tgt_clip	src/compton.h	/^set_tgt_clip(session_t *ps, XserverRegion reg, const reg_data_t *pcache_reg) {$/;"	f
+shadow	src/common.h	/^  bool shadow       : 1;$/;"	m	struct:__anon7
+shadow	src/common.h	/^  bool shadow;$/;"	m	struct:_win
+shadow_blacklist	src/common.h	/^  c2_lptr_t *shadow_blacklist;$/;"	m	struct:_options_t
+shadow_blue	src/common.h	/^  double shadow_red, shadow_green, shadow_blue;$/;"	m	struct:_options_t
+shadow_corner	src/common.h	/^  unsigned char *shadow_corner;$/;"	m	struct:_session_t
+shadow_dx	src/common.h	/^  int shadow_dx;$/;"	m	struct:_win
+shadow_dy	src/common.h	/^  int shadow_dy;$/;"	m	struct:_win
+shadow_exclude_reg	src/common.h	/^  XserverRegion shadow_exclude_reg;$/;"	m	struct:_session_t
+shadow_exclude_reg_geom	src/common.h	/^  geometry_t shadow_exclude_reg_geom;$/;"	m	struct:_options_t
+shadow_force	src/common.h	/^  switch_t shadow_force;$/;"	m	struct:_win
+shadow_green	src/common.h	/^  double shadow_red, shadow_green, shadow_blue;$/;"	m	struct:_options_t
+shadow_height	src/common.h	/^  int shadow_height;$/;"	m	struct:_win
+shadow_ignore_shaped	src/common.h	/^  bool shadow_ignore_shaped;$/;"	m	struct:_options_t
+shadow_last	src/common.h	/^  bool shadow_last;$/;"	m	struct:_win
+shadow_offset_x	src/common.h	/^  int shadow_offset_x, shadow_offset_y;$/;"	m	struct:_options_t
+shadow_offset_y	src/common.h	/^  int shadow_offset_x, shadow_offset_y;$/;"	m	struct:_options_t
+shadow_opacity	src/common.h	/^  double shadow_opacity;$/;"	m	struct:_options_t
+shadow_opacity	src/common.h	/^  double shadow_opacity;$/;"	m	struct:_win
+shadow_paint	src/common.h	/^  paint_t shadow_paint;$/;"	m	struct:_win
+shadow_radius	src/common.h	/^  int shadow_radius;$/;"	m	struct:_options_t
+shadow_red	src/common.h	/^  double shadow_red, shadow_green, shadow_blue;$/;"	m	struct:_options_t
+shadow_top	src/common.h	/^  unsigned char *shadow_top;$/;"	m	struct:_session_t
+shadow_width	src/common.h	/^  int shadow_width;$/;"	m	struct:_win
+shape_error	src/common.h	/^  int shape_error;$/;"	m	struct:_session_t
+shape_event	src/common.h	/^  int shape_event;$/;"	m	struct:_session_t
+shape_exists	src/common.h	/^  bool shape_exists;$/;"	m	struct:_session_t
+should_ignore	src/compton.c	/^should_ignore(session_t *ps, unsigned long sequence) {$/;"	f	file:
+show_all_xerrors	src/common.h	/^  bool show_all_xerrors;$/;"	m	struct:_options_t
+show_build_help_msg	tests/cmake-test.sh	/^show_build_help_msg() {$/;"	f
+size	src/common.h	/^  int size;$/;"	m	struct:__anon17
+size_expose	src/common.h	/^  int size_expose;$/;"	m	struct:_session_t
+solid_picture	src/compton.c	/^solid_picture(session_t *ps, bool argb, double a,$/;"	f	file:
+stoppaint_force	src/common.h	/^  switch_t stoppaint_force;$/;"	m	struct:_options_t
+strcmp_wd	src/c2.h	/^strcmp_wd(const char *needle, const char *src) {$/;"	f
+sub_unslong	src/compton.h	/^sub_unslong(unsigned long a, unsigned long b) {$/;"	f
+sum_gaussian	src/compton.c	/^sum_gaussian(conv *map, double opacity,$/;"	f	file:
+sw_opti	src/common.h	/^  bool sw_opti;$/;"	m	struct:_options_t
+switch_t	src/common.h	/^} switch_t;$/;"	t	typeref:enum:__anon3
+swopti_handle_timeout	src/compton.c	/^swopti_handle_timeout(session_t *ps, struct timeval *ptv) {$/;"	f	file:
+swopti_init	src/compton.c	/^swopti_init(session_t *ps) {$/;"	f	file:
+synchronize	src/common.h	/^  bool synchronize;$/;"	m	struct:_options_t
+target	src/common.h	/^  GLenum target;$/;"	m	struct:_glx_texture
+texture	src/common.h	/^  GLuint texture;$/;"	m	struct:_glx_texture
+texture_fmt	src/common.h	/^  GLint texture_fmt;$/;"	m	struct:__anon12
+texture_tgts	src/common.h	/^  GLint texture_tgts;$/;"	m	struct:__anon12
+textures	src/common.h	/^  GLuint textures[2];$/;"	m	struct:__anon14
+tgt	src/c2.h	/^  char *tgt;$/;"	m	struct:_c2_l
+tgt_buffer	src/common.h	/^  paint_t tgt_buffer;$/;"	m	struct:_session_t
+tgt_buffer_fence	src/common.h	/^  XSyncFence tgt_buffer_fence;$/;"	m	struct:_session_t
+tgt_onframe	src/c2.h	/^  bool tgt_onframe;$/;"	m	struct:_c2_l
+tgt_picture	src/common.h	/^  Picture tgt_picture;$/;"	m	struct:_session_t
+tgtatom	src/c2.h	/^  Atom tgtatom;$/;"	m	struct:_c2_l
+time_ms_t	src/common.h	/^typedef long time_ms_t;$/;"	t
+time_start	src/common.h	/^  struct timeval time_start;$/;"	m	struct:_session_t	typeref:struct:_session_t::timeval
+timeout_clear	src/compton.c	/^timeout_clear(session_t *ps) {$/;"	f	file:
+timeout_drop	src/compton.c	/^timeout_drop(session_t *ps, timeout_t *prm) {$/;"	f
+timeout_get_newrun	src/compton.h	/^timeout_get_newrun(const timeout_t *ptmout) {$/;"	f
+timeout_get_poll_time	src/compton.c	/^timeout_get_poll_time(session_t *ps) {$/;"	f	file:
+timeout_insert	src/compton.c	/^timeout_insert(session_t *ps, time_ms_t interval,$/;"	f
+timeout_invoke	src/compton.c	/^timeout_invoke(session_t *ps, timeout_t *ptmout) {$/;"	f
+timeout_reset	src/compton.c	/^timeout_reset(session_t *ps, timeout_t *ptmout) {$/;"	f
+timeout_run	src/compton.c	/^timeout_run(session_t *ps) {$/;"	f	file:
+timeout_t	src/common.h	/^} timeout_t;$/;"	t	typeref:struct:_timeout_t
+timespec_subtract	src/common.h	/^timespec_subtract(struct timespec *result,$/;"	f
+timeval_isempty	src/common.h	/^timeval_isempty(struct timeval *ptv) {$/;"	f
+timeval_ms_cmp	src/common.h	/^timeval_ms_cmp(struct timeval *ptv, time_ms_t ms) {$/;"	f
+timeval_subtract	src/common.h	/^timeval_subtract(struct timeval *result,$/;"	f
+tmout_lst	src/common.h	/^  struct _timeout_t *tmout_lst;$/;"	m	struct:_session_t	typeref:struct:_session_t::_timeout_t
+tmout_unredir	src/common.h	/^  struct _timeout_t *tmout_unredir;$/;"	m	struct:_session_t	typeref:struct:_session_t::_timeout_t
+tmout_unredir_callback	src/compton.c	/^tmout_unredir_callback(session_t *ps, timeout_t *tmout) {$/;"	f	file:
+tmout_unredir_hit	src/common.h	/^  bool tmout_unredir_hit;$/;"	m	struct:_session_t
+to_paint	src/common.h	/^  bool to_paint;$/;"	m	struct:_win
+top	src/common.h	/^  int top;$/;"	m	struct:__anon5
+track_atom_lst	src/common.h	/^  latom_t *track_atom_lst;$/;"	m	struct:_session_t
+track_focus	src/common.h	/^  bool track_focus;$/;"	m	struct:_options_t
+track_leader	src/common.h	/^  bool track_leader;$/;"	m	struct:_options_t
+track_wdata	src/common.h	/^  bool track_wdata;$/;"	m	struct:_options_t
+type	src/c2.h	/^  enum c2_l_type type;$/;"	m	struct:__anon28	typeref:enum:__anon28::c2_l_type
+type	src/c2.h	/^  } type;$/;"	m	struct:_c2_l	typeref:enum:_c2_l::c2_l_type
+type	src/common.h	/^  Atom type;$/;"	m	struct:__anon8
+type	src/xrescheck.h	/^  const char *type;$/;"	m	struct:__anon1
+unifm_factor_center	src/common.h	/^  GLint unifm_factor_center;$/;"	m	struct:__anon13
+unifm_invert_color	src/common.h	/^  GLint unifm_invert_color;$/;"	m	struct:__anon15
+unifm_offset_x	src/common.h	/^  GLint unifm_offset_x;$/;"	m	struct:__anon13
+unifm_offset_y	src/common.h	/^  GLint unifm_offset_y;$/;"	m	struct:__anon13
+unifm_opacity	src/common.h	/^  GLint unifm_opacity;$/;"	m	struct:__anon15
+unifm_tex	src/common.h	/^  GLint unifm_tex;$/;"	m	struct:__anon15
+unlikely	src/common.h	160;"	d
+unmap_callback	src/compton.c	/^unmap_callback(session_t *ps, win *w) {$/;"	f	file:
+unmap_win	src/compton.c	/^unmap_win(session_t *ps, win *w) {$/;"	f	file:
+unredir_if_possible	src/common.h	/^  bool unredir_if_possible;$/;"	m	struct:_options_t
+unredir_if_possible_blacklist	src/common.h	/^  c2_lptr_t *unredir_if_possible_blacklist;$/;"	m	struct:_options_t
+unredir_if_possible_delay	src/common.h	/^  time_ms_t unredir_if_possible_delay;$/;"	m	struct:_options_t
+unredir_if_possible_excluded	src/common.h	/^  bool unredir_if_possible_excluded;$/;"	m	struct:_win
+update_ewmh_active_win	src/compton.c	/^update_ewmh_active_win(session_t *ps) {$/;"	f	file:
+update_refresh_rate	src/compton.c	/^update_refresh_rate(session_t *ps) {$/;"	f	file:
+update_reg_ignore_expire	src/compton.h	/^update_reg_ignore_expire(session_t *ps, const win *w) {$/;"	f
+usage	src/compton.c	/^usage(int ret) {$/;"	f	file:
+use_ewmh_active_win	src/common.h	/^  bool use_ewmh_active_win;$/;"	m	struct:_options_t
+validate_pixmap	src/compton.h	/^validate_pixmap(session_t *ps, Pixmap pxmap) {$/;"	f
+vis	src/common.h	/^  Visual *vis;$/;"	m	struct:_session_t
+vsync	src/common.h	/^  vsync_t vsync;$/;"	m	struct:_options_t
+vsync_aggressive	src/common.h	/^  bool vsync_aggressive;$/;"	m	struct:_options_t
+vsync_deinit	src/compton.c	/^vsync_deinit(session_t *ps) {$/;"	f
+vsync_drm_init	src/compton.c	/^vsync_drm_init(session_t *ps) {$/;"	f	file:
+vsync_drm_wait	src/compton.c	/^vsync_drm_wait(session_t *ps) {$/;"	f	file:
+vsync_init	src/compton.c	/^vsync_init(session_t *ps) {$/;"	f
+vsync_opengl_init	src/compton.c	/^vsync_opengl_init(session_t *ps) {$/;"	f	file:
+vsync_opengl_mswc_deinit	src/compton.c	/^vsync_opengl_mswc_deinit(session_t *ps) {$/;"	f	file:
+vsync_opengl_mswc_init	src/compton.c	/^vsync_opengl_mswc_init(session_t *ps) {$/;"	f	file:
+vsync_opengl_oml_init	src/compton.c	/^vsync_opengl_oml_init(session_t *ps) {$/;"	f	file:
+vsync_opengl_oml_wait	src/compton.c	/^vsync_opengl_oml_wait(session_t *ps) {$/;"	f	file:
+vsync_opengl_swc_deinit	src/compton.c	/^vsync_opengl_swc_deinit(session_t *ps) {$/;"	f	file:
+vsync_opengl_swc_init	src/compton.c	/^vsync_opengl_swc_init(session_t *ps) {$/;"	f	file:
+vsync_opengl_wait	src/compton.c	/^vsync_opengl_wait(session_t *ps) {$/;"	f	file:
+vsync_t	src/common.h	/^} vsync_t;$/;"	t	typeref:enum:__anon10
+vsync_use_glfinish	src/common.h	/^  bool vsync_use_glfinish;$/;"	m	struct:_options_t
+vsync_wait	src/compton.c	/^vsync_wait(session_t *ps) {$/;"	f	file:
+wd_is_in_str	src/opengl.h	/^wd_is_in_str(const char *haystick, const char *needle) {$/;"	f
+white_picture	src/common.h	/^  Picture white_picture;$/;"	m	struct:_session_t
+wid	src/common.h	/^  int wid;$/;"	m	struct:__anon4
+wid_bounding_shaped	src/compton.h	/^wid_bounding_shaped(const session_t *ps, Window wid) {$/;"	f
+wid_get_children	src/compton.h	/^wid_get_children(session_t *ps, Window w,$/;"	f
+wid_get_name	src/compton.c	/^wid_get_name(session_t *ps, Window wid, char **name) {$/;"	f	file:
+wid_get_opacity_prop	src/compton.c	/^wid_get_opacity_prop(session_t *ps, Window wid, opacity_t def) {$/;"	f	file:
+wid_get_prop	src/common.h	/^wid_get_prop(const session_t *ps, Window wid, Atom atom, long length,$/;"	f
+wid_get_prop_adv	src/compton.c	/^wid_get_prop_adv(const session_t *ps, Window w, Atom atom, long offset,$/;"	f
+wid_get_prop_window	src/compton.c	/^wid_get_prop_window(session_t *ps, Window wid, Atom aprop) {$/;"	f	file:
+wid_get_prop_wintype	src/compton.c	/^wid_get_prop_wintype(session_t *ps, Window wid) {$/;"	f	file:
+wid_get_role	src/compton.c	/^wid_get_role(session_t *ps, Window wid, char **role) {$/;"	f	file:
+wid_get_text_prop	src/compton.c	/^wid_get_text_prop(session_t *ps, Window wid, Atom prop,$/;"	f
+wid_has_prop	src/common.h	/^wid_has_prop(const session_t *ps, Window w, Atom atom) {$/;"	f
+wid_rm_opacity_prop	src/compton.h	/^wid_rm_opacity_prop(session_t *ps, Window wid) {$/;"	f
+wid_set_opacity_prop	src/compton.h	/^wid_set_opacity_prop(session_t *ps, Window wid, opacity_t val) {$/;"	f
+wid_set_text_prop	src/compton.h	/^wid_set_text_prop(session_t *ps, Window wid, Atom prop_atom, char *str) {$/;"	f
+width	src/common.h	/^  int width;$/;"	m	struct:__anon14
+width	src/common.h	/^  unsigned width;$/;"	m	struct:_glx_texture
+widthb	src/common.h	/^  int widthb, heightb;$/;"	m	struct:_win
+win	src/common.h	/^} win;$/;"	t	typeref:struct:_win
+win_blur_background	src/compton.c	/^win_blur_background(session_t *ps, win *w, Picture tgt_buffer,$/;"	f	file:
+win_build_shadow	src/compton.c	/^win_build_shadow(session_t *ps, win *w, double opacity) {$/;"	f	file:
+win_calc_frame_extents	src/compton.h	/^win_calc_frame_extents(session_t *ps, const win *w) {$/;"	f
+win_determine_blur_background	src/compton.c	/^win_determine_blur_background(session_t *ps, win *w) {$/;"	f	file:
+win_determine_fade	src/compton.c	/^win_determine_fade(session_t *ps, win *w) {$/;"	f	file:
+win_determine_invert_color	src/compton.c	/^win_determine_invert_color(session_t *ps, win *w) {$/;"	f	file:
+win_determine_mode	src/compton.c	/^win_determine_mode(session_t *ps, win *w) {$/;"	f	file:
+win_determine_shadow	src/compton.c	/^win_determine_shadow(session_t *ps, win *w) {$/;"	f	file:
+win_ev_stop	src/compton.h	/^win_ev_stop(session_t *ps, win *w) {$/;"	f
+win_evmode_t	src/common.h	/^} win_evmode_t;$/;"	t	typeref:enum:__anon20
+win_extents	src/compton.c	/^win_extents(session_t *ps, win *w) {$/;"	f	file:
+win_get_class	src/compton.c	/^win_get_class(session_t *ps, win *w) {$/;"	f	file:
+win_get_leader	src/compton.h	/^win_get_leader(session_t *ps, win *w) {$/;"	f
+win_get_leader_raw	src/compton.c	/^win_get_leader_raw(session_t *ps, win *w, int recursions) {$/;"	f	file:
+win_get_name	src/compton.h	/^win_get_name(session_t *ps, win *w) {$/;"	f
+win_get_prop_str	src/compton.c	/^win_get_prop_str(session_t *ps, win *w, char **tgt,$/;"	f	file:
+win_get_region	src/compton.c	/^win_get_region(session_t *ps, win *w, bool use_offset) {$/;"	f	file:
+win_get_region_noframe	src/compton.c	/^win_get_region_noframe(session_t *ps, win *w, bool use_offset) {$/;"	f	file:
+win_get_role	src/compton.h	/^win_get_role(session_t *ps, win *w) {$/;"	f
+win_has_frame	src/compton.h	/^win_has_frame(const win *w) {$/;"	f
+win_is_focused_real	src/common.h	/^win_is_focused_real(session_t *ps, const win *w) {$/;"	f
+win_is_fullscreen	src/common.h	/^win_is_fullscreen(session_t *ps, const win *w) {$/;"	f
+win_is_solid	src/common.h	/^win_is_solid(session_t *ps, const win *w) {$/;"	f
+win_mark_client	src/compton.c	/^win_mark_client(session_t *ps, win *w, Window client) {$/;"	f	file:
+win_match	src/compton.h	/^win_match(session_t *ps, win *w, c2_lptr_t *condlst, const c2_lptr_t **cache) {$/;"	f
+win_on_factor_change	src/compton.c	/^win_on_factor_change(session_t *ps, win *w) {$/;"	f	file:
+win_on_focus_change	src/compton.c	/^win_on_focus_change(session_t *ps, win *w) {$/;"	f	file:
+win_on_wtype_change	src/compton.c	/^win_on_wtype_change(session_t *ps, win *w) {$/;"	f	file:
+win_paint_shadow	src/compton.c	/^win_paint_shadow(session_t *ps, win *w,$/;"	f	file:
+win_paint_win	src/compton.c	/^win_paint_win(session_t *ps, win *w, XserverRegion reg_paint,$/;"	f	file:
+win_recheck_client	src/compton.c	/^win_recheck_client(session_t *ps, win *w) {$/;"	f	file:
+win_render	src/compton.h	/^win_render(session_t *ps, win *w, int x, int y, int wid, int hei,$/;"	f
+win_rounded_corners	src/compton.c	/^win_rounded_corners(session_t *ps, win *w) {$/;"	f	file:
+win_set_blur_background	src/compton.c	/^win_set_blur_background(session_t *ps, win *w, bool blur_background_new) {$/;"	f	file:
+win_set_fade_force	src/compton.c	/^win_set_fade_force(session_t *ps, win *w, switch_t val) {$/;"	f
+win_set_focused	src/compton.c	/^win_set_focused(session_t *ps, win *w, bool focused) {$/;"	f	file:
+win_set_focused_force	src/compton.c	/^win_set_focused_force(session_t *ps, win *w, switch_t val) {$/;"	f
+win_set_invert_color	src/compton.c	/^win_set_invert_color(session_t *ps, win *w, bool invert_color_new) {$/;"	f	file:
+win_set_invert_color_force	src/compton.c	/^win_set_invert_color_force(session_t *ps, win *w, switch_t val) {$/;"	f
+win_set_leader	src/compton.c	/^win_set_leader(session_t *ps, win *w, Window nleader) {$/;"	f	file:
+win_set_shadow	src/compton.c	/^win_set_shadow(session_t *ps, win *w, bool shadow_new) {$/;"	f	file:
+win_set_shadow_force	src/compton.c	/^win_set_shadow_force(session_t *ps, win *w, switch_t val) {$/;"	f
+win_unmark_client	src/compton.c	/^win_unmark_client(session_t *ps, win *w) {$/;"	f	file:
+win_upd_run	src/compton.c	/^win_upd_run(session_t *ps, win *w, win_upd_t *pupd) {$/;"	f	file:
+win_upd_t	src/common.h	/^} win_upd_t;$/;"	t	typeref:struct:__anon7
+win_upd_wintype	src/compton.c	/^win_upd_wintype(session_t *ps, win *w) {$/;"	f	file:
+win_update_focused	src/compton.c	/^win_update_focused(session_t *ps, win *w) {$/;"	f	file:
+win_update_leader	src/compton.c	/^win_update_leader(session_t *ps, win *w) {$/;"	f	file:
+win_update_opacity_prop	src/compton.h	/^win_update_opacity_prop(session_t *ps, win *w) {$/;"	f
+win_update_opacity_rule	src/compton.c	/^win_update_opacity_rule(session_t *ps, win *w) {$/;"	f	file:
+win_update_prop_shadow	src/compton.c	/^win_update_prop_shadow(session_t *ps, win *w) {$/;"	f	file:
+win_update_prop_shadow_raw	src/compton.c	/^win_update_prop_shadow_raw(session_t *ps, win *w) {$/;"	f	file:
+win_update_shape	src/compton.c	/^win_update_shape(session_t *ps, win *w) {$/;"	f	file:
+win_update_shape_raw	src/compton.c	/^win_update_shape_raw(session_t *ps, win *w) {$/;"	f	file:
+win_validate_pixmap	src/compton.h	/^win_validate_pixmap(session_t *ps, win *w) {$/;"	f
+wincond_target	src/common.h	/^enum wincond_target {$/;"	g
+wincond_type	src/common.h	/^enum wincond_type {$/;"	g
+window_type	src/common.h	/^  wintype_t window_type;$/;"	m	struct:_win
+winmode_t	src/common.h	/^} winmode_t;$/;"	t	typeref:enum:__anon6
+winprop_get_int	src/common.h	/^winprop_get_int(winprop_t prop) {$/;"	f
+winprop_t	src/common.h	/^} winprop_t;$/;"	t	typeref:struct:__anon8
+wintype_arr_enable	src/compton.h	/^wintype_arr_enable(bool arr[]) {$/;"	f
+wintype_arr_enable_unset	src/compton.h	/^wintype_arr_enable_unset(switch_t arr[]) {$/;"	f
+wintype_fade	src/common.h	/^  bool wintype_fade[NUM_WINTYPES];$/;"	m	struct:_options_t
+wintype_focus	src/common.h	/^  bool wintype_focus[NUM_WINTYPES];$/;"	m	struct:_options_t
+wintype_opacity	src/common.h	/^  double wintype_opacity[NUM_WINTYPES];$/;"	m	struct:_options_t
+wintype_shadow	src/common.h	/^  bool wintype_shadow[NUM_WINTYPES];$/;"	m	struct:_options_t
+wintype_t	src/common.h	/^} wintype_t;$/;"	t	typeref:enum:__anon2
+wmwin	src/common.h	/^  bool wmwin;$/;"	m	struct:_win
+write_binary_data	src/common.h	/^write_binary_data(const char *path, const unsigned char *data, int length) {$/;"	f
+write_pid	src/compton.c	/^write_pid(session_t *ps) {$/;"	f	file:
+write_pid_path	src/common.h	/^  char *write_pid_path;$/;"	m	struct:_options_t
+x	src/common.h	/^  int x;$/;"	m	struct:__anon4
+xerror	src/compton.c	/^xerror(Display __attribute__((unused)) *dpy, XErrorEvent *ev) {$/;"	f	file:
+xfixes_error	src/common.h	/^  int xfixes_error;$/;"	m	struct:_session_t
+xfixes_event	src/common.h	/^  int xfixes_event;$/;"	m	struct:_session_t
+xid	src/xrescheck.h	/^  XID xid;$/;"	m	struct:__anon1
+xinerama_exists	src/common.h	/^  bool xinerama_exists;$/;"	m	struct:_session_t
+xinerama_nscrs	src/common.h	/^  int xinerama_nscrs;$/;"	m	struct:_session_t
+xinerama_scr	src/common.h	/^  int xinerama_scr;$/;"	m	struct:_win
+xinerama_scr_regs	src/common.h	/^  XserverRegion *xinerama_scr_regs;$/;"	m	struct:_session_t
+xinerama_scrs	src/common.h	/^  XineramaScreenInfo *xinerama_scrs;$/;"	m	struct:_session_t
+xinerama_shadow_crop	src/common.h	/^  bool xinerama_shadow_crop;$/;"	m	struct:_options_t
+xr_blur_dst	src/compton.c	/^xr_blur_dst(session_t *ps, Picture tgt_buffer,$/;"	f	file:
+xr_build_picture	src/compton.c	/^xr_build_picture(session_t *ps, int wid, int hei,$/;"	f	file:
+xr_glx_sync	src/opengl.c	/^xr_glx_sync(session_t *ps, Drawable d, XSyncFence *pfence) {$/;"	f
+xr_sync	src/common.h	2374;"	d
+xr_sync	src/common.h	2376;"	d
+xr_sync_	src/common.h	/^xr_sync_(session_t *ps, Drawable d$/;"	f
+xrc_add_xid	src/xrescheck.h	23;"	d
+xrc_add_xid_	src/xrescheck.c	/^xrc_add_xid_(XID xid, const char *type, M_POS_DATA_PARAMS) {$/;"	f
+xrc_clear_xid	src/xrescheck.c	/^xrc_clear_xid(void) {$/;"	f
+xrc_delete_xid	src/xrescheck.h	28;"	d
+xrc_delete_xid_	src/xrescheck.c	/^xrc_delete_xid_(XID xid, M_POS_DATA_PARAMS) {$/;"	f
+xrc_report_xid	src/xrescheck.c	/^xrc_report_xid(void) {$/;"	f
+xrc_xid_record_t	src/xrescheck.h	/^} xrc_xid_record_t;$/;"	t	typeref:struct:__anon1
+xrender_sync	src/common.h	/^  bool xrender_sync;$/;"	m	struct:_options_t
+xrender_sync_fence	src/common.h	/^  bool xrender_sync_fence;$/;"	m	struct:_options_t
+xrfilter_convolution_exists	src/common.h	/^  bool xrfilter_convolution_exists;$/;"	m	struct:_session_t
+xrfilter_reset	src/compton.h	/^xrfilter_reset(session_t *ps, Picture p) {$/;"	f
+xsync_error	src/common.h	/^  int xsync_error;$/;"	m	struct:_session_t
+xsync_event	src/common.h	/^  int xsync_event;$/;"	m	struct:_session_t
+xsync_exists	src/common.h	/^  bool xsync_exists;$/;"	m	struct:_session_t
+y	src/common.h	/^  int y;$/;"	m	struct:__anon4
+y_inverted	src/common.h	/^  bool y_inverted;$/;"	m	struct:__anon12
+y_inverted	src/common.h	/^  bool y_inverted;$/;"	m	struct:_glx_texture
+z	src/common.h	/^  int z;$/;"	m	struct:__anon19
