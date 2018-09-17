@@ -723,6 +723,7 @@ win_render(session_t *ps, win *w, int x, int y, int wid, int hei,
 
 static inline void
 set_tgt_clip(session_t *ps, XserverRegion reg, const reg_data_t *pcache_reg) {
+  return;
   switch (ps->o.backend) {
     case BKEND_XRENDER:
     case BKEND_XR_GLX_HYBRID:

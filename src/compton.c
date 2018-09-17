@@ -1135,7 +1135,7 @@ paint_preprocess(session_t *ps, win *list) {
       calc_opacity(ps, w);
       calc_dim(ps, w);
     }
-    
+
     animate_window(w, ps);
 
     // Run fading
@@ -1849,7 +1849,7 @@ paint_all(session_t *ps, XserverRegion region, XserverRegion region_real, win *t
     reg_paint = region;
   }
 
-  set_tgt_clip(ps, reg_paint, NULL);
+  /* set_tgt_clip(ps, reg_paint, NULL); */
   paint_root(ps, reg_paint);
 
   // Create temporary regions for use during painting
@@ -3095,15 +3095,16 @@ static void
 animate_window(win * w, session_t * ps) {
   if (!w->inTransition) return;
 
-  const long animLen = 5*1000;
+  const long animLen = 50*1000;
   long currentTime = clock();
-  
+
   if (currentTime - w->time_transStart >= animLen) {
     w->a.x = w->targetX;
     w->a.y = w->targetY;
     w->inTransition = false;
   } else {
     float q = (float) (currentTime - w->time_transStart)/animLen;
+    q = pow(q, 2.0);
     w->a.x = w->fromX + (w->targetX - w->fromX) * q;
     w->a.y = w->fromY + (w->targetY - w->fromY) * q;
   }
@@ -7839,3 +7840,4 @@ main(int argc, char **argv) {
 
   return 0;
 }
+
