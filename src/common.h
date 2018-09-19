@@ -1234,8 +1234,11 @@ typedef struct _win {
 #endif
 
   bool inTransition;
+  bool lastTransFrame;
   int  fromX, fromY;
   int  targetX, targetY;
+  int  fromW, fromH;
+  int  targetW, targetH;
   long time_transStart;
 } win;
 

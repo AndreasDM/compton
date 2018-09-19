@@ -10,10 +10,10 @@
 
 #include "compton.h"
 #include <ctype.h>
-#include <time.h>
 
 // === Global constants ===
 
+const  long animLen = 500;
 static void animate_window(win * w, session_t * ps);
 
 /// Name strings for window types.
@@ -1136,6 +1136,7 @@ paint_preprocess(session_t *ps, win *list) {
       calc_dim(ps, w);
     }
 
+    // Run window position/size transition
     animate_window(w, ps);
 
     // Run fading
@@ -1154,10 +1155,11 @@ paint_preprocess(session_t *ps, win *list) {
         || w->paint_excluded)
       to_paint = false;
 
+
     // to_paint will never change afterward
 
     // Determine mode as early as possible
-    if (to_paint && (!w->to_paint || w->opacity != opacity_old))
+    if (to_paint && (!w->to_paint || w->opacity != opacity_old || w->inTransition))
       win_determine_mode(ps, w);
 
     if (to_paint) {
@@ -1196,7 +1198,7 @@ paint_preprocess(session_t *ps, win *list) {
 
     // Add window to damaged area if its painting status changes
     // or opacity changes
-    if (to_paint != w->to_paint || w->opacity != opacity_old)
+    if (to_paint != w->to_paint || w->opacity != opacity_old || w->inTransition)
       add_damage_win(ps, w);
 
     // Destroy all reg_ignore above when window mode changes
@@ -1257,7 +1259,7 @@ paint_preprocess(session_t *ps, win *list) {
     }
 
     // Avoid setting w->to_paint if w is to be freed
-    bool destroyed = (w->opacity_tgt == w->opacity && w->destroyed);
+    bool destroyed = (w->opacity_tgt == w->opacity && !w->inTransition && w->destroyed);
 
     if (to_paint) {
       w->prev_trans = t;
@@ -1560,7 +1562,8 @@ render_(session_t *ps, int x, int y, int dx, int dy, int wid, int hei,
     default:
       assert(0);
   }
-  printf("%d, %d, %d, %d\n", dx, dy, wid, hei);
+
+  /* printf("%d, %d, %d, %d\n", dx, dy, wid, hei); */
 }
 
 /**
@@ -3093,26 +3096,49 @@ init_filters(session_t *ps);
 
 static void
 animate_window(win * w, session_t * ps) {
+  if (w->lastTransFrame) {
+    w->lastTransFrame = false;
+    w->inTransition   = false;
+    return;
+  }
   if (!w->inTransition) return;
 
-  const long animLen = 50*1000;
-  long currentTime = clock();
+  time_ms_t currentTime = get_time_ms();
 
   if (currentTime - w->time_transStart >= animLen) {
-    w->a.x = w->targetX;
-    w->a.y = w->targetY;
-    w->inTransition = false;
+    w->a.x      = w->targetX;
+    w->a.y      = w->targetY;
+    w->widthb   = w->targetW;
+    w->heightb  = w->targetH;
+    w->lastTransFrame = true;
   } else {
-    float q = (float) (currentTime - w->time_transStart)/animLen;
-    q = pow(q, 2.0);
-    w->a.x = w->fromX + (w->targetX - w->fromX) * q;
-    w->a.y = w->fromY + (w->targetY - w->fromY) * q;
+
+    const float animPow = 1.1;
+    const float animB   = 0.0;
+    const float animC   = 1.0;
+    const float animD   = 1.0;
+    const float animS   = 1.60158f;
+    const float animSB  = 1.1;
+
+    float t = (float) (currentTime - w->time_transStart)/animLen;
+
+    float tA = pow(t, animPow);
+    float tB = animC*((t=t/animD-1)*t*((animS+1)*t + animS) + 1) + animB;
+    float tC = animC*((tA=tA/animD-1)*t*((animSB+1)*tA + animSB) + 1) + animB;
+
+    w->a.x     = (float)(w->fromX) * (1-tC) + (float)(w->targetX) * tC;
+    w->a.y     = (float)(w->fromY) * (1-tC) + (float)(w->targetY) * tC;
+    w->widthb  = (float)(w->fromW) * (1-tB) + (float)(w->targetW) * tB;
+    w->heightb = (float)(w->fromH) * (1-tB) + (float)(w->targetH) * tB;
+
+    /* q = pow(q, 2.0); */
+    /* w->a.x      = w->fromX + (w->targetX - w->fromX) * q; */
+    /* w->a.y      = w->fromY + (w->targetY - w->fromY) * q; */
+    /* w->a.width  = w->fromW + (w->targetW - w->fromW) * q; */
+    /* w->a.height = w->fromH + (w->targetH - w->fromH) * q; */
   }
 
-  w->to_paint = true;
-  w->damaged = true;
-  /* force_repaint(ps); */
-  printf("Moved the window, bitch!\n");
+  ps->idling = false;
 }
 
 static void
@@ -3195,23 +3221,13 @@ configure_win(session_t *ps, XConfigureEvent *ce) {
     // If window position changed
     if (w->a.x != ce->x || w->a.y != ce->y) {
       w->inTransition = true;
-      w->time_transStart = clock();
+      w->time_transStart = get_time_ms();
       w->fromX = w->a.x;
       w->fromY = w->a.y;
       w->targetX = ce->x;
       w->targetY = ce->y;
-      /* printf("%ld\n", clock()); */
-      /* printf("%d, %d -> %d, %d\n", w->a.x, w->a.y, ce->x, ce->y); */
-
-      ps->idling = false;
-    }
-
-    // WINDOW POSITION 
-    if (w->inTransition) {
-      animate_window(w, ps);
-    } else {
-      w->a.x = ce->x;
-      w->a.y = ce->y;
+      w->fromW = w->targetW = w->widthb;
+      w->fromH = w->targetH = w->heightb;
     }
 
     if (w->a.width != ce->width || w->a.height != ce->height
@@ -3220,10 +3236,14 @@ configure_win(session_t *ps, XConfigureEvent *ce) {
 
     if (w->a.width != ce->width || w->a.height != ce->height
         || w->a.border_width != ce->border_width) {
+
       w->a.width = ce->width;
       w->a.height = ce->height;
       w->a.border_width = ce->border_width;
       calc_win_size(ps, w);
+
+      w->targetW = w->widthb;
+      w->targetH = w->heightb;
 
       // Rounded corner detection is affected by window size
       if (ps->shape_exists && ps->o.shadow_ignore_shaped
